@@ -15,25 +15,13 @@ use Zend\View\Model\ViewModel;
 
 class TestController extends AbstractActionController {
 
-    protected $userInfoTable;
-
     public function indexAction() {
         //テスト
         $view = new ViewModel;
-        $resultSet = $this->getUserInfoTable()->fetchAll();
+        $userInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
+        $resultSet = $userInfoTable->fetchAll();
         $view->data = $resultSet;
         return $view;
-    }
-
-    public function getUserInfoTable() {
-        if (!$this->userInfoTable) {
-            $sm = $this->getServiceLocator();
-            $this->userInfoTable = $sm->get('Bookstore\Model\UserInfoTable');
-            echo '<pre>';
-            var_dump($this->userInfoTable);
-            echo '</pre>';
-        }
-        return $this->userInfoTable;
     }
 
 }
