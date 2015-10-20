@@ -22,7 +22,12 @@ class UserInfoTable {
 
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
-        return $resultSet;
+        $row = $resultSet->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $id");
+        }
+        return $row;
+        //return $resultSet->toArray();
     }
 
     public function getUser($email) {

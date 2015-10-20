@@ -20,6 +20,7 @@ class TestController extends AbstractActionController {
         $view = new ViewModel;
         $userInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
         $resultSet = $userInfoTable->fetchAll();
+        
         $view->data = $resultSet;
         return $view;
     }

@@ -14,6 +14,7 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\ServiceManager\ServiceManager;
 use Bookstore\Model\UserInfoTable;
 use Bookstore\Model\UserInfo;
 
@@ -52,7 +53,7 @@ class Module {
                     $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
-                    return new TableGateway('UserInfo', $dbAdapter, NULL, $resultSetPrototype);
+                    return new TableGateway('userinfo', $dbAdapter, NULL, $resultSetPrototype);
                 },
             )
         );

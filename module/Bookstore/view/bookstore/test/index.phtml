@@ -6,36 +6,46 @@
         <title>書類管理システム</title>
     </head>
     <body>
-    <div class="header">
-    	<h1>書類管理システム</h1>
-    	<hr class="hr-header">
-    </div>
-    <div class="nav">
-    	<div class="nav-title"></div>
-    </div>
-    <div class="container">
-        <hr class="hr-container"><br><br><br>
-        <form action="./login.php" method="POST">
+        <div class="header">
+            <h1>書類管理システム</h1>
+            <hr class="hr-header">
+        </div>
+        <div class="nav">
+            <div class="nav-title"></div>
+        </div>
+        <div class="container">
+            <hr class="hr-container"><br><br><br>
             <table class="no-border">
-            	<tr>
-                    <th>ユーザー</th>
-                    <td><input type="text" name="user"></td>
-            	</tr>
-            	<tr>
-                    <th>パスワード</th>
-                    <td><input type="text" name="password"></td>
+
+                <tr>
+                    <td>ID</td>
+                    <td>user</td>
+                    <td>password</td>
+                    <td>email</td>
                 </tr>
+                <?php
+                $users = $this->data;
+                if (count($users) > 0):
+                    foreach ($users as $row):
+                        echo '<pre>';
+                        var_dump($users);
+                        echo '</pre>';
+                        //foreach ($rows as $row):
+                        ?>
+                        <tr>
+                            <td><?= $this->escapeHtml($row['ID']); ?></td>
+                            <td><?= $this->escapeHtml($row['user']); ?></td>
+                            <td><?= $this->escapeHtml($row['password']); ?></td>
+                            <td><?= $this->escapeHtml($row['email']); ?></td>
+                        </tr>
+                    <?php endforeach; 
+                    //endforeach;
+                endif; ?>
             </table><br><br><br>
-            <input type="submit" name="login" value="ログイン">
-        </form>
-        <!-- エラーがある場合、ログイン画面にエラーと表示 -->
-	<p><?php 
-            $errMsg = null;
-            echo $errMsg.'test';?></p>
-	</div>
-	<div class="footer">
+        </div>
+        <div class="footer">
             <hr class="hr-footer">
             <div class="copyright">copyright (c) 2010 all rights reserved.</div>
-    </div>
+        </div>
     </body>
 </html>
