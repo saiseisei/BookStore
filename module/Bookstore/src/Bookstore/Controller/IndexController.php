@@ -21,20 +21,29 @@ class IndexController extends AbstractActionController
         $request = $this->getRequest();
         $form = new LoginForm();
         $userInfo = array();
+        $resultSet = array();
+        $userInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
         
         if($request->isPost()){
             $userInfo = $request->getPost();
-            $form->setInputFilter($form->getInputFilter());
             $form->setData($userInfo);
-            if($form->isValid() == true){
-                echo '123';
-            }
-
+            $form->setInputFilter($form->getInputFilter());
             
+            if($form->isValid() == false){
+                echo '<pre>';    
         var_dump($userInfo);
+        echo '</pre>';
+                
+                
+            }
+            $resultSet = $userInfoTable->getUser($userInfo['email']);
+
+        echo '<pre>';    
+        //var_dump($userInfo);
+        echo '</pre>';
         }
         $view->form = $form;
-        $view->data = $userInfo;
+        $view->data = $resultSet;
         $view->title = "ログイン";
         return $view;
     }

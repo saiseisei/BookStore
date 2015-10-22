@@ -27,20 +27,16 @@
                 $users = $this->data;
                 if (count($users) > 0):
                     foreach ($users as $row):
-                        echo '<pre>';
-                        var_dump($users);
-                        echo '</pre>';
-                        //foreach ($rows as $row):
                         ?>
                         <tr>
-                            <td><?= $this->escapeHtml($row['ID']); ?></td>
-                            <td><?= $this->escapeHtml($row['user']); ?></td>
-                            <td><?= $this->escapeHtml($row['password']); ?></td>
-                            <td><?= $this->escapeHtml($row['email']); ?></td>
+                            <td><?= $this->escapeHtml($row->id); ?></td>
+                            <td><?= $this->escapeHtml($row->user); ?></td>
+                            <td><?= $this->escapeHtml($row->password); ?></td>
+                            <td><?= $this->escapeHtml($row->email); ?></td>
                         </tr>
-                    <?php endforeach; 
-                    //endforeach;
-                endif; ?>
+                    <?php endforeach;
+                endif;?>
+                
             </table><br><br><br>
         </div>
         <div class="footer">
