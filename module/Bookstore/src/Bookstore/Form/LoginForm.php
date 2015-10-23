@@ -3,7 +3,8 @@
 namespace Bookstore\Form;
 
 use Zend\Form\Form;
-
+use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputFilter;
 
 class LoginForm extends Form {
 
@@ -36,4 +37,81 @@ class LoginForm extends Form {
         ));
     }
 
+    public function getInputFilter() {
+
+        $inputFilter = new InputFilter();
+
+        $inputFilter->add(array(
+            'name' => 'email',
+            'required' => true,
+            'filters' => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name' => 'NotEmpty',
+                    'break_chain_on_failure' => true,
+                    'options' => array(
+                        'messages' => array(
+                            //\Zend\Validator\NotEmpty::IS_EMPTY => sprintf('%sを入力してください。', 'メールアドレス'),
+                            \Zend\Validator\NotEmpty::IS_EMPTY => 'メールアドレスを入力してください。',
+                        ),
+                    ),
+                ),
+                array(
+                    'name' => 'StringLength',
+                    'break_chain_on_failure' => true,
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                        'min' => 0,
+                        'max' => 100,
+                        'message' => array(
+                            \Zend\Validator\StringLength::TOO_LONG => sprintf('%sは%s文字以内で入力してください。', 'メールアドレス', '100'),
+                        )
+                    ),
+                ),
+                array(
+                    'name' => 'EmailAddress',
+                    'options' => array(
+                        'message' => array(
+                            \Zend\Validator\EmailAddress::INVALID_FORMAT => sprintf('%sは有効な形式で入力してください。', 'メールアドレス'),
+                        ),
+                    ),
+                )
+            ),
+        ));
+
+        $inputFilter->add(array(
+            'name' => 'password',
+            'required' => true,
+            'filters' => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name' => 'NotEmpty',
+                    'break_chain_on_failure' => true,
+                    'options' => array(
+                        'messages' => array(
+                            \Zend\Validator\NotEmpty::IS_EMPTY => 'パスワードを入力してください。',
+                            //\Zend\Validator\NotEmpty::IS_EMPTY => sprintf('%sを入力してください。', 'パスワード'),
+                        ),
+                    ),
+                    'name' => 'StringLength',
+                    'break_chain_on_failure' => true,
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                        'min' => 6,
+                        'messages' => array(
+                            \Zend\Validator\StringLength::TOO_SHORT => sprintf('%sを最低%s文字で入力してください。', 'パスワード', '6'),
+                        ),
+                    ),
+                )
+            )
+        ));
+
+        return $inputFilter;
+    }
 }

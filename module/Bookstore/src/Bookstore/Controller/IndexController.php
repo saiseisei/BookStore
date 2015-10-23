@@ -26,17 +26,16 @@ class IndexController extends AbstractActionController
         
         if($request->isPost()){
             $userInfo = $request->getPost();
-            $form->setData($userInfo);
             $form->setInputFilter($form->getInputFilter());
-            
-            if($form->isValid() == false){
+            $form->setData($userInfo);
+            if($form->isValid() == true){
                 echo '<pre>';    
         var_dump($userInfo);
         echo '</pre>';
-                
-                
+                $resultSet = $userInfoTable->getUser($userInfo['email']);
+                //return "ERROR!";
             }
-            $resultSet = $userInfoTable->getUser($userInfo['email']);
+            
 
         echo '<pre>';    
         //var_dump($userInfo);
