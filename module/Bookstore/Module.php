@@ -55,6 +55,17 @@ class Module {
                     $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
                     return new TableGateway('userinfo', $dbAdapter, NULL, $resultSetPrototype);
                 },
+                'Bookstore\Model\BookInfoTable' => function(ServiceManager $serviceManager) {
+                    $tableGateway = $serviceManager->get('BookInfoTableGateway');
+                    $table = new UserInfoTable($tableGateway);
+                    return $table;
+                },
+                'BookInfoTableGateway' => function(ServiceManager $serviceManager) {
+                    $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
+                    return new TableGateway('bookinfo', $dbAdapter, NULL, $resultSetPrototype);
+                },
             )
         );
     }

@@ -18,21 +18,19 @@
             <table class="no-border">
 
                 <tr>
-                    <td>ID</td>
-                    <td>user</td>
-                    <td>password</td>
-                    <td>email</td>
+                    <td>ISBN</td>
+                    <td>TITLE</td>
+                    <td>NAME</td>
                 </tr>
                 <?php
-                $users = $this->data;
-                if (count($users) > 0):
-                    foreach ($users as $row):
+                $books = $this->data;
+                if (count($books) > 0):
+                    foreach ($books as $row):
                         ?>
                         <tr>
-                            <td><?= $this->escapeHtml($row->id); ?></td>
-                            <td><?= $this->escapeHtml($row->user); ?></td>
-                            <td><?= $this->escapeHtml($row->password); ?></td>
-                            <td><?= $this->escapeHtml($row->email); ?></td>
+                            <td><?= $this->escapeHtml($row->isbn); ?></td>
+                            <td><?= $this->escapeHtml($row->title); ?></td>
+                            <td><?= $this->escapeHtml($row->name); ?></td>
                         </tr>
                     <?php endforeach;
                 endif;?>

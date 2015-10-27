@@ -18,9 +18,30 @@ class BookController extends AbstractActionController {
     public function indexAction() {
         //書類一覧
         $view = new ViewModel;
-        $userInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
-        $resultSet = $userInfoTable->fetchAll();
+        $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
+        $resultSet = $bookInfoTable->fetchAll();
         $view->data = $resultSet;
+        return $view;
+    }
+
+    //書類登録
+    public function addAction() {
+        //書類一覧
+        $view = new ViewModel;
+        return $view;
+    }
+
+    //書類更新
+    public function updateAction() {
+        //書類一覧
+        $view = new ViewModel;
+        return $view;
+    }
+
+    //書類削除
+    public function deleteAction() {
+        //書類一覧
+        $view = new ViewModel;
         return $view;
     }
 

@@ -4,21 +4,14 @@ namespace Bookstore\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
-class UserInfoTable {
+class BookInfoTable {
 
     protected $tableGateway;
-    protected $table = 'userinfo';
+    protected $table = 'bookinfo';
 
     public function __construct (TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
-    
-    /*public function setDbAdapter(Adapter $adapter)
-    {
-        $resultSetPrototype = new ResultSet();
-        $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
-        $this->tableGateway = new TableGateway('userinfo', $adapter, null, $resultSetPrototype);
-    }*/
 
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
@@ -65,4 +58,13 @@ class UserInfoTable {
         $this->insert($data);
     }
 
+    
+        
+    /*public function setDbAdapter(Adapter $adapter)
+    {
+        $resultSetPrototype = new ResultSet();
+        $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
+        $this->tableGateway = new TableGateway('userinfo', $adapter, null, $resultSetPrototype);
+    }*/
+    
 }
