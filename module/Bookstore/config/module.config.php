@@ -76,6 +76,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Bookstore\Controller\Index' => 'Bookstore\Controller\IndexController',
+            'Bookstore\Controller\Book' => 'Bookstore\Controller\BookController',
             'Bookstore\Controller\Test' => 'Bookstore\Controller\TestController',
         ),
     ),

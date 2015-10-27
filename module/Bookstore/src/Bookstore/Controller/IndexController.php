@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -13,37 +14,46 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Bookstore\Form\LoginForm;
 
-class IndexController extends AbstractActionController
-{
-    public function indexAction()
-    {
+class IndexController extends AbstractActionController {
+
+    public function indexAction() {
         $view = new ViewModel();
         $request = $this->getRequest();
         $form = new LoginForm();
         $userInfo = array();
         $resultSet = array();
         $userInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
-        
-        if($request->isPost()){
+
+        if ($request->isPost()) {
             $userInfo = $request->getPost();
             $form->setInputFilter($form->getInputFilter());
             $form->setData($userInfo);
-            if($form->isValid() == true){
-                echo '<pre>';    
-        var_dump($userInfo);
-        echo '</pre>';
+            if ($form->isValid() == true) {
                 $resultSet = $userInfoTable->getUser($userInfo['email']);
-                //return "ERROR!";
+                return $this->forward()->dispatch('Bookstore\Controller\Index',array('action' => 'menu')); 
+                /*echo '<pre>';
+                var_dump($resultSet);
+                echo '</pre>';
+                $view->setTemplate('bookstore/index/menu');
+                return $this->getRequest()->getRequestUri();
+                echo $this->redirect()->toRoute('bookstore',array('controller'=>'index','action' => 'menu'));
+                 */
             }
-            
-
-        echo '<pre>';    
-        //var_dump($userInfo);
-        echo '</pre>';
         }
         $view->form = $form;
         $view->data = $resultSet;
         $view->title = "ログイン";
         return $view;
     }
+    
+    public function menuAction() {
+        $view = new ViewModel();
+        $view->title = "メニュー";
+        return $view;
+    }
+
+    
+    
+    
+    
 }

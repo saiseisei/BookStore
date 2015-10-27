@@ -40,7 +40,9 @@ class LoginForm extends Form {
     public function getInputFilter() {
 
         $inputFilter = new InputFilter();
-
+        $emailIsEmpty = \Zend\Validator\NotEmpty::IS_EMPTY;
+        $passwordIsEmpty = \Zend\Validator\NotEmpty::IS_EMPTY;
+        
         $inputFilter->add(array(
             'name' => 'email',
             'required' => true,
@@ -55,7 +57,7 @@ class LoginForm extends Form {
                     'options' => array(
                         'messages' => array(
                             //\Zend\Validator\NotEmpty::IS_EMPTY => sprintf('%sを入力してください。', 'メールアドレス'),
-                            \Zend\Validator\NotEmpty::IS_EMPTY => 'メールアドレスを入力してください。',
+                            $emailIsEmpty => 'メールアドレスを入力してください。',
                         ),
                     ),
                 ),
@@ -95,7 +97,7 @@ class LoginForm extends Form {
                     'break_chain_on_failure' => true,
                     'options' => array(
                         'messages' => array(
-                            \Zend\Validator\NotEmpty::IS_EMPTY => 'パスワードを入力してください。',
+                            $passwordIsEmpty => 'パスワードを入力してください。',
                             //\Zend\Validator\NotEmpty::IS_EMPTY => sprintf('%sを入力してください。', 'パスワード'),
                         ),
                     ),

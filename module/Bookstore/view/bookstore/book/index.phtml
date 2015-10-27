@@ -15,22 +15,29 @@
         </div>
         <div class="container">
             <hr class="hr-container"><br><br><br>
-            <?php
-            $form->setAttribute('id', 'frm');
-            $form->prepare();
-            echo $this->form()->openTag($form);
-            ?>
             <table class="no-border">
-                <tr><td><?php echo $this->formRow($form->get('email')) ?></td></tr>
-                <tr><td><?php echo $this->formRow($form->get('password')) ?></td></tr>
+
+                <tr>
+                    <td>ID</td>
+                    <td>user</td>
+                    <td>password</td>
+                    <td>email</td>
+                </tr>
+                <?php
+                $users = $this->data;
+                if (count($users) > 0):
+                    foreach ($users as $row):
+                        ?>
+                        <tr>
+                            <td><?= $this->escapeHtml($row->id); ?></td>
+                            <td><?= $this->escapeHtml($row->user); ?></td>
+                            <td><?= $this->escapeHtml($row->password); ?></td>
+                            <td><?= $this->escapeHtml($row->email); ?></td>
+                        </tr>
+                    <?php endforeach;
+                endif;?>
+                
             </table><br><br><br>
-            <input type="submit" name="login" id="login" value="LOGIN" />
-            <?php echo $this->form()->closeTag(); ?>
-            <!-- エラーがある場合、ログイン画面にエラーと表示 -->
-            <p><?php
-               // $errMsg = null;
-                //echo $errMsg . 'test';
-                ?></p>
         </div>
         <div class="footer">
             <hr class="hr-footer">
