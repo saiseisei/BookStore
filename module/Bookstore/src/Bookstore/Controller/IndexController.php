@@ -30,8 +30,10 @@ class IndexController extends AbstractActionController {
             $form->setData($userInfo);
             if ($form->isValid() == true) {
                 $resultSet = $userInfoTable->getUser($userInfo['email']);
-                return $this->forward()->dispatch('Bookstore\Controller\Index',array('action' => 'menu')); 
-                /*echo '<pre>';
+                //return $this->forward()->dispatch('Bookstore\Controller\Index',array('action' => 'menu')); 
+                return $this->redirect()->toUrl('/bookstore/index/menu');
+                /*return $this->redirect()->toRoute('bookstore',array('controllter'=>'index','action'=>'menu'));
+                echo '<pre>';
                 var_dump($resultSet);
                 echo '</pre>';
                 $view->setTemplate('bookstore/index/menu');
@@ -48,6 +50,13 @@ class IndexController extends AbstractActionController {
     
     public function menuAction() {
         $view = new ViewModel();
+        //$dirs = explode("/", $_SERVER['REQUEST_URI'], -1);
+        //$basePath = $dirs[1];
+        //echo $_SERVER['SERVER_NAME']; 
+        //echo '<pre>';
+        //var_dump($basePath);
+        //echo '</pre>';
+        //$view->basePath = $basePath;
         $view->title = "メニュー";
         return $view;
     }

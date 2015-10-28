@@ -8,11 +8,13 @@
     <body>
         <div class="header">
             <h1>書類管理システム</h1>
-        </div>
+        </div><?php echo $this->url('bookstore',array('controller' => 'book','action' =>'index')).'/index<br>';
+        ?>
         <div class="container">
             <br><br><br>
             <table class="no-border">
-                <tr><td><a href="./list.php">【書類一覧】</a></td></tr>
+                <tr><td><a href="<?php //url('bookstore',array('controller' => 'book','action' => 'index'))
+                echo $this->url('bookstore',array('controller' => 'book')).'/index'?>">【書類一覧】</a></td></tr>
                 <tr><td><a href="./insert.php">【書類登録】</a></td></tr>
                 <tr><td></td></tr>
                 <tr><td><a href="./showCart.php">【カート状況確認】</a></td></tr>

@@ -16,7 +16,8 @@
         <div class="container">
             <hr class="hr-container"><br><br><br>
             <?php
-            $form->setAttribute('id', 'frm');
+            //$form->setAttribute('id','frm');
+            $form->setAttribute('action',$this->url('bookstore',array('controller' => 'index','action'=>'menu')));
             $form->prepare();
             echo $this->form()->openTag($form);
             ?>

@@ -17,6 +17,8 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\ServiceManager;
 use Bookstore\Model\UserInfoTable;
 use Bookstore\Model\UserInfo;
+use Bookstore\Model\BookInfoTable;
+use Bookstore\Model\BookInfo;
 
 class Module {
 
@@ -57,13 +59,13 @@ class Module {
                 },
                 'Bookstore\Model\BookInfoTable' => function(ServiceManager $serviceManager) {
                     $tableGateway = $serviceManager->get('BookInfoTableGateway');
-                    $table = new UserInfoTable($tableGateway);
+                    $table = new BookInfoTable($tableGateway);
                     return $table;
                 },
                 'BookInfoTableGateway' => function(ServiceManager $serviceManager) {
                     $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
+                    $resultSetPrototype->setArrayObjectPrototype(new BookInfo());
                     return new TableGateway('bookinfo', $dbAdapter, NULL, $resultSetPrototype);
                 },
             )

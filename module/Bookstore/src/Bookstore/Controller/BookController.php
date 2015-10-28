@@ -18,9 +18,10 @@ class BookController extends AbstractActionController {
     public function indexAction() {
         //書類一覧
         $view = new ViewModel;
-        $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\UserInfoTable');
+        $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         $resultSet = $bookInfoTable->fetchAll();
         $view->data = $resultSet;
+        $view->setTemplate("bookstore/book/index");
         return $view;
     }
 

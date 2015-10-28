@@ -22,11 +22,21 @@ return array(
                         'action' => 'index',
                     ),
                 ),
-            ),
+            ),/* the old backup
             'bookstore' => array(
                 'type' => 'Literal',
                 'options' => array(
                     'route' => '/bookstore',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Bookstore\Controller',
+                        'controller' => 'Index',
+                        'action' => 'index',
+                    ),
+                ),*/
+            'bookstore' => array(
+                'type' => 'Segment',
+                'options' => array( //'route' => '/bookstore/[:controller[/:action[/:id]]]',
+                    'route' => '/bookstore/[:controller[/:action]]',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Bookstore\Controller',
                         'controller' => 'Index',
@@ -37,8 +47,8 @@ return array(
                 'child_routes' => array(
                     'default' => array(
                         'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:controller[/:action]]',
+                        'options' => array( //'route' => '/bookstore/[:controller[/:action[/:id]]]',
+                            'route' => '/bookstore/[:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
