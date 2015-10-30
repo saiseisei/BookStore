@@ -1,41 +1,19 @@
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="Content-Style-Type" content="text/css">
-        <link href="style.css" rel="stylesheet" type="text/css">
-        <title>書類管理システム</title>
-    </head>
-    <body>
-        <div class="header">
-            <h1>書類管理システム</h1>
-            <hr class="hr-header">
-        </div>
-        <div class="nav">
-            <div class="nav-title"></div>
-        </div>
-        <div class="container">
-            <hr class="hr-container"><br><br><br>
-            <?php
-            //$form->setAttribute('id','frm');
-            $form->setAttribute('action',$this->url('bookstore',array('controller' => 'index','action'=>'menu')));
-            $form->prepare();
-            echo $this->form()->openTag($form);
-            ?>
-            <table class="no-border">
-                <tr><td><?php echo $this->formRow($form->get('email')) ?></td></tr>
-                <tr><td><?php echo $this->formRow($form->get('password')) ?></td></tr>
-            </table><br><br><br>
-            <input type="submit" name="login" id="login" value="LOGIN" />
-            <?php echo $this->form()->closeTag(); ?>
-            <!-- エラーがある場合、ログイン画面にエラーと表示 -->
-            <p><?php
-               // $errMsg = null;
-                //echo $errMsg . 'test';
-                ?></p>
-        </div>
-        <div class="footer">
-            <hr class="hr-footer">
-            <div class="copyright">copyright (c) 2010 all rights reserved.</div>
-        </div>
-    </body>
-</html>
+<div><br><br><br>
+    <?php
+    $form->setAttribute('id','frm');
+    //$form->setAttribute('action', $this->url('bookstore', array('controller' => 'index', 'action' => 'menu')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <table>
+        <tr><td><?php echo $this->formRow($form->get('email')) ?></td></tr>
+        <tr><td><?php echo $this->formRow($form->get('password')) ?></td></tr>
+    </table><br><br><br>
+    <input type="submit" name="login" id="login" value="LOGIN" />
+    <?php echo $this->form()->closeTag(); ?>
+    <!-- エラーがある場合、ログイン画面にエラーと表示 -->
+    <p><?php
+        // $errMsg = null;
+        //echo $errMsg . 'test';
+        ?></p>
+</div>

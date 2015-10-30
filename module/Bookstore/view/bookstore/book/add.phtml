@@ -1,0 +1,22 @@
+<div><br><br><br>
+    <?php
+    $form->setAttribute('id', 'frm');
+    //$form->setAttribute('action', $this->url('bookstore', array('controller' => 'index', 'action' => 'menu')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <table>
+        <tr>
+            <td><?php echo $this->formRow($form->get('isbn')) ?></td>
+            <td><?php echo $this->formRow($form->get('title')) ?></td>
+            <td><?php echo $this->formRow($form->get('price')) ?></td>
+            <td><input type="submit" name="add" id="add[]" value="ADD" /></td>
+        </tr>
+        <tr>
+            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">書類一覧へ戻る</a></td>
+            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">続いて登録</a></td>
+        </tr>
+        <tr></tr>
+    </table><br><br><br>
+    <?php echo $this->form()->closeTag(); ?>
+</div>

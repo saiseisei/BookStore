@@ -28,7 +28,7 @@ class IndexController extends AbstractActionController {
             $userInfo = $request->getPost();
             $form->setInputFilter($form->getInputFilter());
             $form->setData($userInfo);
-            if ($form->isValid() == true) {
+            if ($form->isValid() === true) {
                 $resultSet = $userInfoTable->getUser($userInfo['email']);
                 //return $this->forward()->dispatch('Bookstore\Controller\Index',array('action' => 'menu')); 
                 return $this->redirect()->toUrl('/bookstore/index/menu');

@@ -9,7 +9,7 @@ class BookInfoTable {
     protected $tableGateway;
     protected $table = 'bookinfo';
 
-    public function __construct (TableGateway $tableGateway) {
+    public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
 
@@ -18,53 +18,46 @@ class BookInfoTable {
         return $resultSet;
     }
 
-    public function getUser($email) {
-        $rowset = $this->tableGateway->select(array('email' => $email));
+    public function getBook($isbn) {
+        $rowset = $this->tableGateway->select(array('isbn' => $isbn));
         $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find $email");
-        }
+//        if (!$row) {
+//            throw new \Exception("Could not find $isbn");
+//        }
         return $row;
     }
 
-    public function saveUser(User $user) {
-        $data = array(
-            'nickname' => $user->nickname,
-            'email' => $user->email,
-            'password' => $user->password,
+    public function addBook($bookInfo) {
+        $book = array(
+            'isbn' => $bookInfo->isbn,
+            'title' => $bookInfo->title,
+            'price' => $bookInfo->price,
+        );
+        if ($this->getBook($bookInfo->isbn)) {
+            throw new \Exception('The book has been existed! Try again!');
+        }
+        $this->tableGateway->insert($book);
+        
+    }
+
+    public function deleteUser(BookInfo $bookInfo) {
+        $book = array(
+            'isbn' => $bookInfo->isbn,
+            'title' => $bookInfo->title,
+            'price' => $bookInfo->price,
         );
 
-        $id = (int) $user->id;
-        if ($id == 0) {
-            $this->tableGateway->insert($data);
+        if ($this->getBook($book->isbn)) {
+            throw new \Exception('The book doesn\'t exist! ');
         } else {
-            if ($this->getUser($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
-            } else {
-                throw new \Exception('Form id does not exist');
-            }
+            $this->tableGateway->delete(array('isbn' => $book->isbn));
         }
     }
 
-    public function deleteUser($id) {
-        $this->tableGateway->delete(array('id' => $id));
-    }
-
-    public function registerUser(User $user) {
-        $data = array(
-            'email' => $user->email,
-            'password' => $user->password,
-        );
-        $this->insert($data);
-    }
-
-    
-        
-    /*public function setDbAdapter(Adapter $adapter)
-    {
-        $resultSetPrototype = new ResultSet();
-        $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
-        $this->tableGateway = new TableGateway('userinfo', $adapter, null, $resultSetPrototype);
-    }*/
-    
+    /* public function setDbAdapter(Adapter $adapter)
+      {
+      $resultSetPrototype = new ResultSet();
+      $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
+      $this->tableGateway = new TableGateway('userinfo', $adapter, null, $resultSetPrototype);
+      } */
 }
