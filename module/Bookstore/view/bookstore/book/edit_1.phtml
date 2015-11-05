@@ -1,0 +1,56 @@
+<div><br><br><br>
+
+
+    <?php //$this->getRequest()->getPost('foo');$this->getRequest()->getQuery('foo');
+    //if ($this->getRequest()->getPost('edit')):
+        $form->setAttribute('id', 'frm');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        $bookInfo = $this->dataBefore;
+        if (count($bookInfo) > 0):
+            ?>
+            <table>
+                <tr>
+                    <td>ISBN</td>
+                    <td>TITLE</td>
+                    <td>TITLE(NEW)</td>
+                    <td>PRICE</td>
+                    <td>PRICE(NEW)</td>
+                </tr>
+                <tr>
+                    <td><?= $this->escapeHtml($bookInfo->isbn); ?></td>
+                    <td><?= $this->escapeHtml($bookInfo->title); ?></td>
+                    <td><?php echo $this->formRow($form->get('title')) ?></td>
+                    <td><?= $this->escapeHtml($bookInfo->price); ?></td>
+                    <td><?php echo $this->formRow($form->get('price')) ?></td>
+                </tr>
+            </table>
+            <input type="submit" name="edit" id="edit" value="UPDATE">
+            <?php
+        endif;
+        echo $this->form()->closeTag();
+   // else:
+        $bookInfoAfter = $this->dataAfter;
+        $bookInfoBefore = $this->dataBefore;
+        if (isset($bookInfoAfter)):
+            ?>
+            <table>
+                <tr>
+                    <td>ISBN</td>
+                    <td>TITLE</td>
+                    <td>TITLE(NEW)</td>
+                    <td>PRICE</td>
+                    <td>PRICE(NEW)</td>
+                </tr>
+                <tr>
+                    <td><?= $this->escapeHtml($bookInfoAfter['isbn']); ?></td>
+                    <td><?= $this->escapeHtml($bookInfoBefore->title); ?></td>
+                    <td><?= $this->escapeHtml($bookInfoAfter['title']); ?></td>
+                    <td><?= $this->escapeHtml($bookInfoBefore->price); ?></td>
+                    <td><?= $this->escapeHtml($bookInfoAfter['price']); ?></td>
+                </tr>
+            </table>
+        <?php endif;
+    //endif; ?>
+    <br><br><br>
+</div>

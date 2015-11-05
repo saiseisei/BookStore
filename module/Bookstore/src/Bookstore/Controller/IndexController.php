@@ -12,11 +12,14 @@ namespace Bookstore\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Session\Container as SessionContainer;
 use Bookstore\Form\LoginForm;
 
 class IndexController extends AbstractActionController {
 
+    //ログイン画面
     public function indexAction() {
+        $session = new SessionContainer();
         $view = new ViewModel();
         $request = $this->getRequest();
         $form = new LoginForm();
@@ -30,39 +33,38 @@ class IndexController extends AbstractActionController {
             $form->setData($userInfo);
             if ($form->isValid() === true) {
                 $resultSet = $userInfoTable->getUser($userInfo['email']);
-                //return $this->forward()->dispatch('Bookstore\Controller\Index',array('action' => 'menu')); 
+                $session->userInfo = $resultSet;
+                //ユーザー情報が二週間保存できる
+                setcookie('email', $resultSet->email, (time() + 14 * 24 * 3600), '/');
+                setcookie('password', $resultSet->password, (time() + 14 * 24 * 3600), '/');
+                //メインメニューへ
                 return $this->redirect()->toUrl('/bookstore/index/menu');
-                /*return $this->redirect()->toRoute('bookstore',array('controllter'=>'index','action'=>'menu'));
-                echo '<pre>';
-                var_dump($resultSet);
-                echo '</pre>';
-                $view->setTemplate('bookstore/index/menu');
-                return $this->getRequest()->getRequestUri();
-                echo $this->redirect()->toRoute('bookstore',array('controller'=>'index','action' => 'menu'));
-                 */
+                //return $this->forward()->dispatch('Bookstore\Controller\Index',array('action' => 'menu')); 
+                //return $this->redirect()->toRoute('bookstore',array('controllter'=>'index','action'=>'menu'));
             }
+        } else {
+            //既に登録された場合、ユーザー情報をクッキーに保持
+            $userInfo['email'] = isset($_COOKIE['email']) ? $_COOKIE['email'] : NULL;
+            $userInfo['password'] = isset($_COOKIE['password']) ? $_COOKIE['password'] : NULL;
+            $form->get('email')->setValue($userInfo['email']);
+            $form->get('password')->setValue($userInfo['password']);
         }
         $view->form = $form;
-        $view->data = $resultSet;
         $view->title = "ログイン";
         return $view;
     }
-    
+
+    //メインメニュー画面
     public function menuAction() {
+
+        $session = new SessionContainer();
         $view = new ViewModel();
         //$dirs = explode("/", $_SERVER['REQUEST_URI'], -1);
         //$basePath = $dirs[1];
         //echo $_SERVER['SERVER_NAME']; 
-        //echo '<pre>';
-        //var_dump($basePath);
-        //echo '</pre>';
-        //$view->basePath = $basePath;
+        $view->data = $session->userInfo;
         $view->title = "メニュー";
         return $view;
     }
 
-    
-    
-    
-    
 }

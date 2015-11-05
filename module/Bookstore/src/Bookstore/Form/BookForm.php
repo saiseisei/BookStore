@@ -6,12 +6,12 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 
-class AddBookForm extends Form {
+class BookForm extends Form {
 
     //書類登録
     public function __construct() {
 
-        parent::__construct('addBook');
+        parent::__construct('book');
 
         $this->add(array(
             'name' => 'isbn',
@@ -20,9 +20,9 @@ class AddBookForm extends Form {
                 'size' => '20',
                 'maxlength' => '20',
             ),
-            'options' => array(
-                'label' => 'ISBN:',
-            ),
+//            'options' => array(
+//                'label' => 'ISBN:',
+//            ),
         ));
         $this->add(array(
             'name' => 'title',
@@ -31,9 +31,9 @@ class AddBookForm extends Form {
                 'size' => '30',
                 'maxlength' => '100',
             ),
-            'options' => array(
-                'label' => 'TITLE:',
-            ),
+//            'options' => array(
+//                'label' => 'TITLE:',
+//            ),
         ));
         $this->add(array(
             'name' => 'price',
@@ -42,9 +42,9 @@ class AddBookForm extends Form {
                 'size' => '15',
                 'maxlength' => '11',
             ),
-            'options' => array(
-                'label' => 'PRICE:',
-            ),
+//            'options' => array(
+//                'label' => 'PRICE:',
+//            ),
         ));
     }
 
@@ -130,6 +130,15 @@ class AddBookForm extends Form {
                     'options' => array(
                         'messages' => array(
                             \Zend\Validator\NotEmpty::IS_EMPTY => sprintf('%sを入力してください。', '書類価格'),
+                        ),
+                    ),
+                ),
+                array(
+                    'name' => 'Digits',
+                    'break_chain_on_failure' => true,
+                    'options' => array(
+                        'messages' => array(
+                        \Zend\Validator\Digits::NOT_DIGITS => sprintf('%sを数字で入力してください。', '書類価格'),
                         ),
                     ),
                 )

@@ -1,6 +1,8 @@
 <div>
-    <?php //echo $this->url('bookstore', array('controller' => 'book', 'action' => 'index'));?>
+    <?php $userInfo = $this->data; 
+//echo $this->url('bookstore', array('controller' => 'book', 'action' => 'index'));?>
     <br><br><br>
+    <p>【ユーザー】：<a href="<?=$this->url('bookstore', array('controller' => 'user')) . '/index'?>"><?=$userInfo->user?></a></p>
     <table>
         <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/index'?>">【書類一覧】</a></td></tr>
         <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/add'?>">【書類登録】</a></td></tr>

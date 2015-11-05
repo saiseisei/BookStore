@@ -1,26 +1,63 @@
 <div><br><br><br>
-    <table>
-        <tr>
-            <td>ISBN</td>
-            <td>TITLE</td>
-            <td>PRICE</td>
-        </tr>
-        <?php
-        //echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-        $books = $this->data;
-        if (count($books) > 0):
-            foreach ($books as $row):
-                ?>
+    <?php
+    //$this->getRequest()->getPost('foo');$this->getRequest()->getQuery('foo');
+    //if ($this->getRequest()->getPost('edit')):
+    $bookInfoAfter = $this->dataAfter;
+    $bookInfoBefore = $this->dataBefore;
+    if (!isset($bookInfoAfter)):
+        $form->setAttribute('id', 'frm');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        if (count($bookInfoBefore) > 0):
+            ?>
+            <table>
                 <tr>
-                    <td><?= $this->escapeHtml($row->isbn); ?></td>
-                    <td><?= $this->escapeHtml($row->title); ?></td>
-                    <td><?= $this->escapeHtml($row->price); ?></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'edit?isbn='.$row->isbn?>">EDIT</a></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'delete?isbn='.$row->isbn?>">DELETE</a></td>
+                    <td>ISBN</td>
+                    <td>TITLE</td>
+                    <td>TITLE(NEW)</td>
+                    <td>PRICE</td>
+                    <td>PRICE(NEW)</td>
                 </tr>
-                <?php
-            endforeach;
+                <tr>
+                    <td><?= $this->escapeHtml($bookInfoBefore->isbn); ?></td>
+                    <td><?= $this->escapeHtml($bookInfoBefore->title); ?></td>
+                    <td><?php echo $this->formRow($form->get('title')) ?></td>
+                    <td><?= $this->escapeHtml($bookInfoBefore->price); ?></td>
+                    <td><?php echo $this->formRow($form->get('price')) ?></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" name="edit" id="edit" value="UPDATE"></td>
+                </tr>
+            </table>
+        <?php
         endif;
+        echo $this->form()->closeTag();
+    else:
         ?>
-    </table><br><br><br>
+        <table>
+            <tr>
+                <td>ISBN</td>
+                <td>TITLE</td>
+                <td>TITLE(NEW)</td>
+                <td>PRICE</td>
+                <td>PRICE(NEW)</td>
+            </tr>
+            <tr>
+                <td><?= $this->escapeHtml($bookInfoAfter['isbn']); ?></td>
+                <td><?= $this->escapeHtml($bookInfoBefore->title); ?></td>
+                <td><?= $this->escapeHtml($bookInfoAfter['title']); ?></td>
+                <td><?= $this->escapeHtml($bookInfoBefore->price); ?></td>
+                <td><?= $this->escapeHtml($bookInfoAfter['price']); ?></td>
+            </tr>
+            <tr>
+                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">書類一覧へ戻る</a></td>
+                <td></td><td></td><td></td>
+                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id='.$bookInfoAfter['isbn'] ?>">続いて編集</a></td>
+            </tr>
+        </table>
+    <?php
+    //endif;
+    endif;
+    ?>
+    <br><br><br>
 </div>

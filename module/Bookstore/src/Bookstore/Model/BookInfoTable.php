@@ -13,11 +13,13 @@ class BookInfoTable {
         $this->tableGateway = $tableGateway;
     }
 
+    //全ての書類情報を取得する
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
     }
 
+    //isbnより、1件書類情報を取得する
     public function getBook($isbn) {
         $rowset = $this->tableGateway->select(array('isbn' => $isbn));
         $row = $rowset->current();
@@ -27,6 +29,7 @@ class BookInfoTable {
         return $row;
     }
 
+    //1件書類情報を登録する
     public function addBook($bookInfo) {
         $book = array(
             'isbn' => $bookInfo->isbn,
@@ -37,10 +40,28 @@ class BookInfoTable {
             throw new \Exception('The book has been existed! Try again!');
         }
         $this->tableGateway->insert($book);
-        
     }
 
-    public function deleteUser(BookInfo $bookInfo) {
+    //1件書類情報を更新する
+    public function editBook($bookInfo) {
+
+//        $book = array(
+//            'isbn' => $bookInfo['isbn'],
+//            'title' => $bookInfo['title'],
+//            'price' => $bookInfo['price'],
+//        );
+        $row = $this->getBook($bookInfo['isbn']);
+        if (!$row) {
+            throw new \Exception('The book doesn\'t exist! ');
+        }
+        if (($row->title == $bookInfo['title']) && ($row->price == $bookInfo['price'])) {
+            throw new \Exception('The book is exist! Edit again!');
+        }
+        $this->tableGateway->update($bookInfo, array('isbn' => $bookInfo['isbn']));
+    }
+
+    //1件書類を削除する
+    public function deleteBook(BookInfo $bookInfo) {
         $book = array(
             'isbn' => $bookInfo->isbn,
             'title' => $bookInfo->title,

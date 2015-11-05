@@ -16,8 +16,8 @@
                     <td><?= $this->escapeHtml($row->isbn); ?></td>
                     <td><?= $this->escapeHtml($row->title); ?></td>
                     <td><?= $this->escapeHtml($row->price); ?></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'edit?isbn='.$row->isbn?>">EDIT</a></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'delete?isbn='.$row->isbn?>">DELETE</a></td>
+                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'/edit?id='.$row->isbn?>">EDIT</a></td>
+                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'/delete?id='.$row->isbn?>">DELETE</a></td>
                 </tr>
                 <?php
             endforeach;
