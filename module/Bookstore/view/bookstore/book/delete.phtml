@@ -1,26 +1,26 @@
 <div><br><br><br>
-    <table>
-        <tr>
-            <td>ISBN</td>
-            <td>TITLE</td>
-            <td>PRICE</td>
-        </tr>
-        <?php
-        //echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-        $books = $this->data;
-        if (count($books) > 0):
-            foreach ($books as $row):
-                ?>
-                <tr>
-                    <td><?= $this->escapeHtml($row->isbn); ?></td>
-                    <td><?= $this->escapeHtml($row->title); ?></td>
-                    <td><?= $this->escapeHtml($row->price); ?></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'edit?isbn='.$row->isbn?>">EDIT</a></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'delete?isbn='.$row->isbn?>">DELETE</a></td>
-                </tr>
-                <?php
-            endforeach;
-        endif;
+    <?php
+    $bookInfo = $this->data;
+    if (count($bookInfo) > 0):
         ?>
-    </table><br><br><br>
+        <table>
+            <tr>
+                <td>ISBN</td>
+                <td>TITLE</td>
+                <td>PRICE</td>
+            </tr>
+            <tr>
+                <td><?= $this->escapeHtml($bookInfo->isbn); ?></td>
+                <td><?= $this->escapeHtml($bookInfo->title); ?></td>
+                <td><?= $this->escapeHtml($bookInfo->price); ?></td>
+            </tr>
+            <tr><td colspan="3"/><?= '上記の書類を削除してよろしいでしょうか？' ?></tr>
+            <tr>
+                <td><input type="submit" name="yes" id="yes" value="YES"></td>
+                <td><input type="submit" name="no" id="no" value="NO"></td>
+            </tr>
+        </table><br><br><br>
+        <?php
+    endif;
+    ?>
 </div>

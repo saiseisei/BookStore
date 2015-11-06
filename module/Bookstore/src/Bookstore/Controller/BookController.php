@@ -11,7 +11,7 @@
 namespace Bookstore\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Session\Container as SessionContainer; 
+use Zend\Session\Container as SessionContainer;
 use Zend\View\Model\ViewModel;
 use Bookstore\Form\BookForm;
 
@@ -53,7 +53,7 @@ class BookController extends AbstractActionController {
         return $view;
     }
 
-    //書類更新
+    //書類編集
     public function editAction() {
         $session = new SessionContainer();
         $view = new ViewModel;
@@ -77,22 +77,18 @@ class BookController extends AbstractActionController {
                 'title' => $request->getPost('title'),
                 'price' => $request->getPost('price'),
             );
-           
-            
+
             $form->setInputFilter($form->getInputFilter());
             $form->setData($bookInfo);
-            
-            
+
+
             if ($form->isValid() === true) {
                 $bookInfoTable->editBook($bookInfo);
                 $view->dataAfter = $bookInfo;
-                echo '書類情報変更成功！';
-            }else {
-                //echo '123456789';
+            } else {
+                //エラー
             }
-            
         }
-        
         $view->dataBefore = $row;
         $view->form = $form;
         return $view;
@@ -100,8 +96,24 @@ class BookController extends AbstractActionController {
 
     //書類削除
     public function deleteAction() {
-
+        $session = new SessionContainer;
+        $request = $this->getRequest();
         $view = new ViewModel;
+        
+        $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
+        if ($request->isGet()) {
+            $isbn = $this->params()->fromQuery('id', 0);
+            $row = $bookInfoTable->getBook($isbn);
+            if (!$row) {
+                throw new \Exception("Could not find $isbn");
+            }
+            $session->bookInfo = $row;
+        } else if ($request->isPost('yes')) {
+            $bookInfoTable->deleteBook($session->bookInfo);
+        }if ($request->isPost('no')) {
+            return $this->redirect()->toUrl('/bookstore/book/index');
+        }
+        $view->data = $row;
         return $view;
     }
 

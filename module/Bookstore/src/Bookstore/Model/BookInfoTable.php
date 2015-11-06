@@ -61,18 +61,17 @@ class BookInfoTable {
     }
 
     //1件書類を削除する
-    public function deleteBook(BookInfo $bookInfo) {
-        $book = array(
-            'isbn' => $bookInfo->isbn,
-            'title' => $bookInfo->title,
-            'price' => $bookInfo->price,
-        );
-
-        if ($this->getBook($book->isbn)) {
-            throw new \Exception('The book doesn\'t exist! ');
-        } else {
-            $this->tableGateway->delete(array('isbn' => $book->isbn));
+    public function deleteBook($bookInfo) {
+//        $book = array(
+//            'isbn' => $bookInfo->isbn,
+//            'title' => $bookInfo->title,
+//            'price' => $bookInfo->price,
+//        );
+        $row = $this->getBook($bookInfo->isbn);
+        if (!$row) {
+            throw new \Exception('The book doesn\'t exist!');
         }
+        $this->tableGateway->delete(array('isbn' => $bookInfo->isbn));
     }
 
     /* public function setDbAdapter(Adapter $adapter)
