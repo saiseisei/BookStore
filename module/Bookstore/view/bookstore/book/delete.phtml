@@ -3,6 +3,7 @@
     $bookInfo = $this->data;
     if (count($bookInfo) > 0):
         ?>
+    <form action="<?=$this->url('bookstore', array('controller' => 'book')) . '/delete'?>" method="POST">
         <table>
             <tr>
                 <td>ISBN</td>
@@ -18,8 +19,10 @@
             <tr>
                 <td><input type="submit" name="yes" id="yes" value="YES"></td>
                 <td><input type="submit" name="no" id="no" value="NO"></td>
+                <td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/index'?>">NO</a></td>
             </tr>
         </table><br><br><br>
+        </form>
         <?php
     endif;
     ?>

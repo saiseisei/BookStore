@@ -99,7 +99,8 @@ class BookController extends AbstractActionController {
         $session = new SessionContainer;
         $request = $this->getRequest();
         $view = new ViewModel;
-        
+        $row = null;
+
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         if ($request->isGet()) {
             $isbn = $this->params()->fromQuery('id', 0);
@@ -108,12 +109,14 @@ class BookController extends AbstractActionController {
                 throw new \Exception("Could not find $isbn");
             }
             $session->bookInfo = $row;
-        } else if ($request->isPost('yes')) {
-            $bookInfoTable->deleteBook($session->bookInfo);
-        }if ($request->isPost('no')) {
+            $view->data = $row;
+        } elseif ($request->isPost()) {
+            if ($request->getPost()->yes) {
+                $bookInfoTable->deleteBook($session->bookInfo);
+            }
+            unset($session->bookInfo);
             return $this->redirect()->toUrl('/bookstore/book/index');
         }
-        $view->data = $row;
         return $view;
     }
 

@@ -26,6 +26,12 @@ class Module {
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+//        $serviceManager = new ServiceManager();
+//        $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
+//        $myService = $serviceManager->get('MyModule\Service\MyService');
+//        $viewModel->someVar = $myService->getSomeValue();
+        //$this->layout()->someVar;
     }
 
     public function getConfig() {
@@ -43,7 +49,7 @@ class Module {
     }
 
     public function getServiceConfig() {
-    
+
         return array(
             'factories' => array(
                 'Bookstore\Model\UserInfoTable' => function(ServiceManager $serviceManager) {

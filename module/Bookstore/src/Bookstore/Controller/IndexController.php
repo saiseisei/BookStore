@@ -59,6 +59,7 @@ class IndexController extends AbstractActionController {
 
         $session = new SessionContainer();
         $view = new ViewModel();
+        $this->layout()->setVariable('userInfo', $session->userInfo->email);
         //$dirs = explode("/", $_SERVER['REQUEST_URI'], -1);
         //$basePath = $dirs[1];
         //echo $_SERVER['SERVER_NAME']; 

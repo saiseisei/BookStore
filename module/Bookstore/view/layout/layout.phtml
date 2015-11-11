@@ -10,7 +10,7 @@
                 ->appendName('viewport', 'width=device-width, initial-scale=1.0')
                 ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
-
+        
         <!-- Le styles -->
         <?php
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
@@ -18,7 +18,7 @@
                 ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
                 ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
         ?>
-
+        
         <!-- Scripts -->
         <?php
         echo $this->headScript()
@@ -34,11 +34,12 @@
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar">【ユーザー】：<a href="<?=$this->url('bookstore', array('controller' => 'user')) . '/index'?>"><?=$this->sesstion->userInfo['user']?></a></span>
+                        <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?= $this->url('home') ?>"><img src="<?= $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Bookstore') ?></a>
+                    <a class="navbar-brand" href="<?= $this->url('bookstore', array('controller' => 'index')) . '/menu'  ?>"><img src="<?= $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('HOME') ?></a>
+                    <a class="navbar-brand" href="<?=$this->url('bookstore', array('controller' => 'user')) . '/index'?>">&nbsp;<?php echo $this->translate('USER：') ?><?=$this->userInfo?></a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
