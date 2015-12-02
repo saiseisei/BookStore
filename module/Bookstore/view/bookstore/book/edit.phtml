@@ -24,9 +24,10 @@
                     <td><?php echo $this->formRow($form->get('title')) ?></td>
                     <td><?= $this->escapeHtml($bookInfoBefore->price); ?></td>
                     <td><?php echo $this->formRow($form->get('price')) ?></td>
-                </tr>
-                <tr>
-                    <td><input type="submit" name="edit" id="edit" value="UPDATE"></td>
+                    <td><?php if(!$this->editFlag): ?>
+                        <input type="submit" name="edit" id="edit" value="UPDATE">
+                            <?php else:NULL;
+                        endif;?></td>
                 </tr>
             </table>
         <?php
@@ -48,12 +49,12 @@
                 <td><?= $this->escapeHtml($bookInfoAfter['title']); ?></td>
                 <td><?= $this->escapeHtml($bookInfoBefore->price); ?></td>
                 <td><?= $this->escapeHtml($bookInfoAfter['price']); ?></td>
+                <td><?=($this->editFlag==true)? 'SUCCESS！':NULL;?></td>
             </tr>
-            <tr><?='書類情報変更成功！'; ?></tr>
             <tr>
-                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">書類一覧へ戻る</a></td>
+                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a></td>
                 <td></td><td></td><td></td>
-                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id='.$bookInfoAfter['isbn'] ?>">続いて編集</a></td>
+                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id='.$bookInfoAfter['isbn'] ?>">CONTINUE TO EDIT</a></td>
             </tr>
         </table>
     <?php

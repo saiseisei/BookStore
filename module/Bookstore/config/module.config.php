@@ -98,6 +98,7 @@ return array(
         'exception_template' => 'error/index',
         'template_map' => array(
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout_index' => __DIR__ . '/../view/layout/layout_index.phtml',
             'bookstore/index/index' => __DIR__ . '/../view/bookstore/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',

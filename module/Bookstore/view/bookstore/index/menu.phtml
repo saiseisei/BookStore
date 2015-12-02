@@ -4,12 +4,12 @@
     <br><br><br>
     <p>【ユーザー】：<a href="<?=$this->url('bookstore', array('controller' => 'user')) . '/index'?>"><?=$userInfo->user?></a></p>
     <table>
-        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/index'?>">【書類一覧】</a></td></tr>
-        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/add'?>">【書類登録】</a></td></tr>
+        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/index'?>">【BOOK LIST】</a></td></tr>
+        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/add'?>">【ADD BOOKS】</a></td></tr>
         <tr><td></td></tr>
-        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'cart')) . '/index'?>">【カート状況確認】</a></td></tr>
-        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/import'?>">【初期データ登録（データがない場合のみ）】</a></td></tr>
-        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'order')) . '/index'?>">【購入状況確認】</a></td></tr>
+        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'cart')) . '/index'?>">【MY CART】</a></td></tr>
+        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'order')) . '/index'?>">【MY PURCHASE HISTORY】</a></td></tr>
+        <tr><td><a href="<?=$this->url('bookstore', array('controller' => 'book')) . '/import'?>">【THE FIRST TIME TO ADD BOOKS】</a></td></tr>
         <tr><td></td></tr>
     </table><br><br><br>
 </div>

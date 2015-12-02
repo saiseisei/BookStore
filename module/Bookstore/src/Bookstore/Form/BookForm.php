@@ -8,7 +8,7 @@ use Zend\InputFilter\InputFilter;
 
 class BookForm extends Form {
 
-    //書類登録
+    //book form
     public function __construct() {
 
         parent::__construct('book');

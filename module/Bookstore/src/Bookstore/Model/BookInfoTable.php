@@ -13,13 +13,13 @@ class BookInfoTable {
         $this->tableGateway = $tableGateway;
     }
 
-    //全ての書類情報を取得する
+    //fetch all the books from the database
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
     }
 
-    //isbnより、1件書類情報を取得する
+    //get a book from the database by the book's isbn
     public function getBook($isbn) {
         $rowset = $this->tableGateway->select(array('isbn' => $isbn));
         $row = $rowset->current();
@@ -29,7 +29,7 @@ class BookInfoTable {
         return $row;
     }
 
-    //1件書類情報を登録する
+    //add a book to the database
     public function addBook($bookInfo) {
         $book = array(
             'isbn' => $bookInfo->isbn,
@@ -42,7 +42,7 @@ class BookInfoTable {
         $this->tableGateway->insert($book);
     }
 
-    //1件書類情報を更新する
+    //updata the book's information 
     public function editBook($bookInfo) {
 
 //        $book = array(
@@ -60,7 +60,7 @@ class BookInfoTable {
         $this->tableGateway->update($bookInfo, array('isbn' => $bookInfo['isbn']));
     }
 
-    //1件書類を削除する
+    //delete the book from the database
     public function deleteBook($bookInfo) {
 //        $book = array(
 //            'isbn' => $bookInfo->isbn,

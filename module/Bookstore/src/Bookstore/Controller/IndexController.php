@@ -17,7 +17,7 @@ use Bookstore\Form\LoginForm;
 
 class IndexController extends AbstractActionController {
 
-    //ログイン画面
+    //Login in the site
     public function indexAction() {
         $session = new SessionContainer();
         $view = new ViewModel();
@@ -51,15 +51,16 @@ class IndexController extends AbstractActionController {
         }
         $view->form = $form;
         $view->title = "ログイン";
+        $this->layout()->setTemplate('layout/layout_index');
         return $view;
     }
 
-    //メインメニュー画面
+    //select a choice
     public function menuAction() {
 
         $session = new SessionContainer();
         $view = new ViewModel();
-        $this->layout()->setVariable('userInfo', $session->userInfo->email);
+        $this->layout()->setVariable('userInfo', $session->userInfo->user);
         //$dirs = explode("/", $_SERVER['REQUEST_URI'], -1);
         //$basePath = $dirs[1];
         //echo $_SERVER['SERVER_NAME']; 

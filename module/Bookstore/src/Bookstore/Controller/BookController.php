@@ -17,25 +17,26 @@ use Bookstore\Form\BookForm;
 
 class BookController extends AbstractActionController {
 
-    //書類一覧
+    //List all the books
     public function indexAction() {
 
         $view = new ViewModel;
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         $books = $bookInfoTable->fetchAll();
         $view->data = $books;
-        $view->title = "書類一覧";
+        $view->title = "Books List";
         $view->setTemplate("bookstore/book/index");
         return $view;
     }
 
-    //書類登録
+    //Add a book
     public function addAction() {
 
         $view = new ViewModel;
         $request = $this->getRequest();
         $form = new BookForm();
         $bookInfo = array(); //get_object_vars
+        $addFlag = false;
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         if ($request->isPost()) {
@@ -44,16 +45,19 @@ class BookController extends AbstractActionController {
             $form->setData($bookInfo);
             if ($form->isValid() === true) {
                 $bookInfoTable->addBook($bookInfo);
-                echo '書類登録成功！';
+                $addFlag = true;
+            }else {
+                //error
             }
         }
+        $view->addFlag = $addFlag;
         $view->data = $bookInfo;
         $view->form = $form;
-        $view->title = "書類登録";
+        $view->title = "Add A Book";
         return $view;
     }
 
-    //書類編集
+    //Edit a book
     public function editAction() {
         $session = new SessionContainer();
         $view = new ViewModel;
@@ -61,6 +65,7 @@ class BookController extends AbstractActionController {
         $form = new BookForm();
         $bookInfo = array();
         $row = null;
+        $editFlag = false;
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         if ($request->isGet()) {
@@ -81,20 +86,22 @@ class BookController extends AbstractActionController {
             $form->setInputFilter($form->getInputFilter());
             $form->setData($bookInfo);
 
-
             if ($form->isValid() === true) {
                 $bookInfoTable->editBook($bookInfo);
                 $view->dataAfter = $bookInfo;
+                $editFlag = true;
             } else {
-                //エラー
+                //error
             }
         }
+        $view->editFlag = $editFlag;
         $view->dataBefore = $row;
         $view->form = $form;
+        $view->title = "Edit A Book";
         return $view;
     }
 
-    //書類削除
+    //Delete a book
     public function deleteAction() {
         $session = new SessionContainer;
         $request = $this->getRequest();
@@ -117,6 +124,7 @@ class BookController extends AbstractActionController {
             unset($session->bookInfo);
             return $this->redirect()->toUrl('/bookstore/book/index');
         }
+        $view->title = "Delete A Book";
         return $view;
     }
 

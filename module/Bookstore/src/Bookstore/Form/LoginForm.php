@@ -8,7 +8,7 @@ use Zend\InputFilter\InputFilter;
 
 class LoginForm extends Form {
 
-    //ログイン
+    //login form
     public function __construct() {
 
         parent::__construct('login');

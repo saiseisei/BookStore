@@ -1,5 +1,6 @@
 <div><br><br><br>
     <?php
+    echo $this->headTitle($this->title);
     $form->setAttribute('id', 'frm');
     //$form->setAttribute('action', $this->url('bookstore', array('controller' => 'index', 'action' => 'menu')));
     $form->prepare();
@@ -10,11 +11,13 @@
             <td>ISBN:<?php echo $this->formRow($form->get('isbn')) ?></td>
             <td>TITLE:<?php echo $this->formRow($form->get('title')) ?></td>
             <td>PRICE:<?php echo $this->formRow($form->get('price')) ?></td>
-            <td><input type="submit" name="add" id="add[]" value="ADD" /></td>
+            <td><?php if($this->addFlag === true): echo 'SUCCESS！'; else:?>
+        <input type="submit" name="add" id="add[]" value="ADD" /><?php endif;?></td>
         </tr>
+        <tr></tr>
         <tr>
-            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">書類一覧へ戻る</a></td>
-            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">続いて登録</a></td>
+            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a></td>
+            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">CONTINUE TO ADD</a></td>
         </tr>
         <tr></tr>
     </table><br><br><br>

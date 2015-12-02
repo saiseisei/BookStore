@@ -20,11 +20,13 @@ class UserInfoTable {
         $this->tableGateway = new TableGateway('userinfo', $adapter, null, $resultSetPrototype);
     }*/
 
+    //For the administrator: list all the users 
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
     }
 
+    //get the user's information from database by email
     public function getUser($email) {
         $rowset = $this->tableGateway->select(array('email' => $email));
         $row = $rowset->current();
@@ -34,6 +36,7 @@ class UserInfoTable {
         return $row;
     }
 
+    //add a user to database
     public function saveUser(User $user) {
         $data = array(
             'nickname' => $user->nickname,
@@ -53,6 +56,7 @@ class UserInfoTable {
         }
     }
 
+    //withdraw from the site
     public function deleteUser($id) {
         $this->tableGateway->delete(array('id' => $id));
     }
