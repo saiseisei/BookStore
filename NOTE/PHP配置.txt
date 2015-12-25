@@ -1,16 +1,19 @@
 C:\Program Files\Zend\Apache2\conf\httpd.conf
 
 
-Listen 91
-<VirtualHost *:91>
-DocumentRoot "C:\Users\sai\Desktop\gdc_portal\public"
-<Directory "C:\Users\sai\Desktop\gdc_portal\public">
-Order allow,deny
-Allow from all
-AllowOverride all
-</Directory>
+Listen 70
+<VirtualHost *:70>
+    DocumentRoot "C:\xampp\htdocs\Bookstore\public"
+    #ServerName new
+    #ServerAlias www.ZendSkeletonApplication.dev
+    #SetEnv APPLICATION_ENV "development"
+    <Directory "C:\xampp\htdocs\Bookstore\public">
+      DirectoryIndex index.php
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+    </Directory>
 </VirtualHost>
-
 
 x86 
 XAMPP for Windows 5.5.28
