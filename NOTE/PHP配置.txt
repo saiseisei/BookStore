@@ -1,0 +1,20 @@
+C:\Program Files\Zend\Apache2\conf\httpd.conf
+
+
+Listen 91
+<VirtualHost *:91>
+DocumentRoot "C:\Users\sai\Desktop\gdc_portal\public"
+<Directory "C:\Users\sai\Desktop\gdc_portal\public">
+Order allow,deny
+Allow from all
+AllowOverride all
+</Directory>
+</VirtualHost>
+
+
+x86 
+XAMPP for Windows 5.5.28
+Apache Version:
+  Apache/2.4.16 (Win32) OpenSSL/1.0.1p PHP/5.5.28 
+PHP Version:
+  PHP Version 5.5.28
