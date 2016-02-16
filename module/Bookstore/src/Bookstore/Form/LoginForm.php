@@ -26,7 +26,7 @@ class LoginForm extends Form {
         ));
         $this->add(array(
             'name' => 'password',
-            'type' => 'text',
+            'type' => 'Password',
             'attributes' => array(
                 'size' => '16',
                 'maxlength' => '200',
