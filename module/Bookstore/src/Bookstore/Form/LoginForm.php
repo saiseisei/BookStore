@@ -40,9 +40,6 @@ class LoginForm extends Form {
     public function getInputFilter() {
 
         $inputFilter = new InputFilter();
-        //$emailIsEmpty = \Zend\Validator\NotEmpty::IS_EMPTY;
-        //$passwordIsEmpty = \Zend\Validator\NotEmpty::IS_EMPTY;
-        //$IsEmpty = \Zend\Validator\NotEmpty::IS_EMPTY;
 
         $inputFilter->add(array(
             'name' => 'email',

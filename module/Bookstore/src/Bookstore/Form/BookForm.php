@@ -17,34 +17,78 @@ class BookForm extends Form {
             'name' => 'isbn',
             'type' => 'text',
             'attributes' => array(
-                'size' => '20',
-                'maxlength' => '20',
+                'size' => 30,
+                'maxlength' => 30,
             ),
 //            'options' => array(
 //                'label' => 'ISBN:',
 //            ),
         ));
+
         $this->add(array(
             'name' => 'title',
             'type' => 'text',
             'attributes' => array(
-                'size' => '30',
-                'maxlength' => '100',
+                'size' => 30,
+                'maxlength' => 50,
             ),
-//            'options' => array(
-//                'label' => 'TITLE:',
-//            ),
         ));
+
+        $this->add(array(
+            'name' => 'subtitle',
+            'type' => 'text',
+            'attributes' => array(
+                'size' => 30,
+                'maxlength' => 100,
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'writer',
+            'type' => 'text',
+            'attributes' => array(
+                'size' => 30,
+                'maxlength' => 60,
+            ),
+        ));
+
         $this->add(array(
             'name' => 'price',
             'type' => 'text',
             'attributes' => array(
-                'size' => '15',
-                'maxlength' => '11',
+                'size' => 15,
+                'maxlength' => 11,
             ),
-//            'options' => array(
-//                'label' => 'PRICE:',
-//            ),
+        ));
+
+        $this->add(array(
+            'name' => 'category',
+            'type' => 'select',
+            'attributes' => array(
+                'size' => 30,
+            ),
+            'options' => array(
+                'category0' => '選択して下さい',
+                'category1' => '小説',
+                'category2' => '文芸',
+                'category3' => '教養',
+                'category4' => '経済',
+                'category5' => '社会',
+                'category6' => '経営',
+                'category7' => '人文',
+                'category8' => '語学',
+                'category9' => '医学・薬学',
+                'category10' => 'コンピュータ',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'comment',
+            'type' => 'textarea',
+            'attributes' => array(
+                'row' => 4,
+                'cols' => 40,
+            ),
         ));
     }
 
@@ -75,7 +119,7 @@ class BookForm extends Form {
                     'options' => array(
                         'encoding' => 'UTF-8',
                         'min' => 0,
-                        'max' => 20,
+                        'max' => 30,
                         'message' => array(
                             \Zend\Validator\StringLength::TOO_LONG => sprintf('%sは%s文字以内で入力してください。', '書類番号', '20'),
                         )
@@ -107,7 +151,7 @@ class BookForm extends Form {
                     'options' => array(
                         'encoding' => 'UTF-8',
                         'min' => 0,
-                        'max' => 100,
+                        'max' => 50,
                         'messages' => array(
                             \Zend\Validator\StringLength::TOO_LONG => sprintf('%sを最多%s文字で入力してください。', '書類タイトル', '100'),
                         ),
@@ -138,11 +182,16 @@ class BookForm extends Form {
                     'break_chain_on_failure' => true,
                     'options' => array(
                         'messages' => array(
-                        \Zend\Validator\Digits::NOT_DIGITS => sprintf('%sを数字で入力してください。', '書類価格'),
+                            \Zend\Validator\Digits::NOT_DIGITS => sprintf('%sを数字で入力してください。', '書類価格'),
                         ),
                     ),
                 )
             )
+        ));
+
+        $inputFilter->add(array(
+            'name' => 'category',
+            'required' => true,
         ));
 
         return $inputFilter;
