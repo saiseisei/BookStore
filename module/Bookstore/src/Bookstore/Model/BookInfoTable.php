@@ -15,7 +15,8 @@ class BookInfoTable {
 
     //fetch all the books from the database
     public function fetchAll() {
-        $resultSet = $this->tableGateway->select();
+        $sql = 'SELECT * FROM bookstoredb.bookinfo;';
+        $resultSet = $this->tableGateway->getAdapter()->query($sql)->execute();  
         return $resultSet;
     }
 
@@ -34,7 +35,11 @@ class BookInfoTable {
         $book = array(
             'isbn' => $bookInfo->isbn,
             'title' => $bookInfo->title,
+            'subtitle' => $bookInfo->subtitle,
+            'writer' => $bookInfo->writer,
             'price' => $bookInfo->price,
+            'category' => $bookInfo->category,
+            'comment' => $bookInfo->comment
         );
         if ($this->getBook($bookInfo->isbn)) {
             throw new \Exception('The book has been existed! Try again!');

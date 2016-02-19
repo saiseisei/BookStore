@@ -23,6 +23,7 @@ class BookController extends AbstractActionController {
         $view = new ViewModel;
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         $books = $bookInfoTable->fetchAll();
+        //\Zend\Debug\Debug::dump($books);
         $view->data = $books;
         $view->title = "Books List";
         $view->setTemplate("bookstore/book/index");
@@ -43,13 +44,14 @@ class BookController extends AbstractActionController {
             $bookInfo = $request->getPost();
             $form->setInputFilter($form->getInputFilter());
             $form->setData($bookInfo);
+//\Zend\Debug\Debug::dump($bookInfo->category) ;
             if ($form->isValid() === true) {
                 $bookInfoTable->addBook($bookInfo);
                 $addFlag = true;
             }else {
                 //error
             }
-        }
+        }\Zend\Debug\Debug::dump($bookInfo);
         $view->addFlag = $addFlag;
         $view->data = $bookInfo;
         $view->form = $form;

@@ -1,27 +1,34 @@
-<div><br><br><br>
-    <table>
-        <tr><td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'/add'?>">ADD A BOOK</a></td></tr>
+<div><br><br><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">ADD A BOOK</a><br>
+    <table border = 3>
         <tr>
             <td>ISBN</td>
             <td>TITLE</td>
+            <td>SUB TITLE</td>
+            <td>WRITER</td>
             <td>PRICE</td>
+            <td>CATEGORY</td>
+            <td>COMMENT</td>
+            <td>EDIT</td>
+            <td>DELECT</td>
         </tr>
         <?php
-        //echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
         $books = $this->data;
         if (count($books) > 0):
             foreach ($books as $row):
                 ?>
                 <tr>
-                    <td><?= $this->escapeHtml($row->isbn); ?></td>
-                    <td><?= $this->escapeHtml($row->title); ?></td>
-                    <td><?= $this->escapeHtml($row->price); ?></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'/edit?id='.$row->isbn?>">EDIT</a></td>
-                    <td><a href="<?=$this->url('bookstore',array('controller'=>'book')).'/delete?id='.$row->isbn?>">DELETE</a></td>
+                    <td width = '150'><?= $this->escapeHtml($row['ISBN']); ?></td>
+                    <td width = '200'><?= $this->escapeHtml($row['TITLE']); ?></td>
+                    <td><?= $this->escapeHtml($row['SUBTITLE']); ?></td>
+                    <td><?= $this->escapeHtml($row['WRITER']); ?></td>
+                    <td><?= $this->escapeHtml($row['PRICE']); ?></td>
+                    <td><?= $this->escapeHtml($row['CATEGORY']); ?></td>
+                    <td><?= $this->escapeHtml($row['COMMENT']); ?></td>
+                    <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row->isbn ?>">EDIT</a></td>
+                    <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row->isbn ?>">DELETE</a></td>
                 </tr>
                 <?php
             endforeach;
-        endif;
-        ?>
+        endif;?>
     </table><br><br><br>
 </div>

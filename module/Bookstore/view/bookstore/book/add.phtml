@@ -1,25 +1,42 @@
 <div><br><br><br>
     <?php
     echo $this->headTitle($this->title);
-    $form->setAttribute('id', 'frm');
+    $form->setAttribute('id', 'book');
     //$form->setAttribute('action', $this->url('bookstore', array('controller' => 'index', 'action' => 'menu')));
     $form->prepare();
     echo $this->form()->openTag($form);
     ?>
+    <h3 align='left'> ADD A BOOK</h3>
     <table>
+
         <tr>
-            <td>ISBN:<?php echo $this->formRow($form->get('isbn')) ?></td>
-            <td>TITLE:<?php echo $this->formRow($form->get('title')) ?></td>
-            <td>PRICE:<?php echo $this->formRow($form->get('price')) ?></td>
-            <td><?php if($this->addFlag === true): echo 'SUCCESS！'; else:?>
-        <input type="submit" name="add" id="add[]" value="ADD" /><?php endif;?></td>
+            <td>ISBN:</td><td><?php echo $this->formRow($form->get('isbn')) ?></td>
         </tr>
-        <tr></tr>
         <tr>
-            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a></td>
-            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">CONTINUE TO ADD</a></td>
+            <td>TITLE:</td><td><?php echo $this->formRow($form->get('title')) ?></td>
         </tr>
-        <tr></tr>
+        <tr>
+            <td>SUBTITLE:</td><td><?php echo $this->formRow($form->get('subtitle')) ?></td>
+        </tr>
+        <tr>
+            <td>WRITER:</td><td><?php echo $this->formRow($form->get('writer')) ?></td>
+        </tr>
+        <tr>
+            <td>PRICE:</td><td><?php echo $this->formRow($form->get('price')) ?></td>
+        </tr>
+        <tr>
+            <td>CATEGORY:</td><td><?php echo $this->formSelect($form->getAttributes('category',array('KEY'=>'VALUE'))); ?></td>
+        </tr>
+        <tr>
+            <td>COMMENT:</td><td><?php echo $this->formRow($form->get('comment')) ?></td>
+        </tr>
+        <tr>
+            <td><?php if ($this->addFlag === true): echo 'SUCCESS！';else: ?><input type="submit" name="add" id=" " size="30" value="ADD" /><?php endif; ?></td>
+        </tr>
     </table><br><br><br>
-    <?php echo $this->form()->closeTag(); ?>
+    <span>
+        <a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a>
+        <a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">CONTINUE TO ADD</a>
+    </span>
+<?php echo $this->form()->closeTag(); ?>
 </div>

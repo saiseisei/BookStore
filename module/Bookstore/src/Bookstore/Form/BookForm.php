@@ -65,20 +65,22 @@ class BookForm extends Form {
             'name' => 'category',
             'type' => 'select',
             'attributes' => array(
-                'size' => 30,
+                'id' => 'category',
             ),
             'options' => array(
-                'category0' => '選択して下さい',
-                'category1' => '小説',
-                'category2' => '文芸',
-                'category3' => '教養',
-                'category4' => '経済',
-                'category5' => '社会',
-                'category6' => '経営',
-                'category7' => '人文',
-                'category8' => '語学',
-                'category9' => '医学・薬学',
-                'category10' => 'コンピュータ',
+                'empty_option' => 'Choose the category',
+                'value_options' => array(
+                    '1' => '小説',
+                    '2' => '文芸',
+                    '3' => '教養',
+                    '4' => '経済',
+                    '5' => '社会',
+                    '6' => '経営',
+                    '7' => '人文',
+                    '8' => '語学',
+                    '9' => '医学・薬学',
+                    '10' => 'コンピュータ'
+                ),
             ),
         ));
 
@@ -86,7 +88,7 @@ class BookForm extends Form {
             'name' => 'comment',
             'type' => 'textarea',
             'attributes' => array(
-                'row' => 4,
+                'rows' => 10,
                 'cols' => 40,
             ),
         ));
