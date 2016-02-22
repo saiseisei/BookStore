@@ -1,0 +1,428 @@
+﻿例9.1-1
+        $now = date('Y-m-d');
+        $userinfo = array(
+            'no' => $datainfo->no,
+            'update_time' => $now,
+        );
+        
+$userinfo = array(
+	'no' => $datainfo->no,
+	'update_time'=>date('Y-m-d');
+);       
+
+-------------------------------------------------------------
+例9.1-2
+[修正前]
+$array = array("apple", "banana", "orange", "3");
+        $removeValue = 3;
+        $flag = NULL;
+
+        for ($i = 0; $i < count($array); $i++) {
+            if ($array[$i] == $removeValue) {
+                $flag = $i;
+                break;
+            }
+        }
+        if ($flag != NULL) {
+            array_splice($array, 1);
+        }
+
+[修正後]
+$array = array("foo", "bar", "hello", "world", "3");
+        $removeValue = 3;
+
+        for ($i = 0; $i < count($array); $i++) {
+            if ($array[$i] == $removeValue) {
+                array_splice($array, 1);
+                break;
+            }
+        }
+-------------------------------------------------------------
+例9.1-3
+[修正前]
+$done = FALSE;
+while(/*条件*/ && !$done){
+    ...
+    if (...) {
+        $done = TRUE;
+        continue;
+    }
+}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>制御フロー変数を削除する</title>
+    </head>
+    <script type="text/javascript">
+        function InputCheck() {
+            done = false;
+            var radio = document.form.radio.checked;
+            var value = [];
+            var i = 0;
+            var elem = document.getElementById('text' + i);
+            while (radio === true && !done) {
+                if (elem.value !== '') {
+                    value.push(elem.value);
+                    if (value.length === 3) {
+                        done = true;
+                        continue;
+                    }
+                } else {
+                    alert('text' + i + ' is empty!');
+                    break;
+                }
+                i++;
+                var elem = document.getElementById('text' + i);
+            }
+            if (radio !== true) {
+                alert('please check the radio button!');
+            }
+        }
+    </script>
+    <body>
+        <form name="form" action="9.4.php" method="post">
+            Information:<input type="radio" name="radio" id="radio"><br>
+            nickname:<input type="text" name="text0" id="text0" value=""><br> 
+            email   :<input type="text" name="text1" id="text1" value=""><br> 
+            address :<input type="text" name="text2" id="text2" value=""><br>
+            <input type="button" value="InputCheck" onclick ="InputCheck();
+                    window.location.reload();">
+        </form>
+        <?php ?>
+    </body>
+</html>
+
+[修正後]
+while(/*条件*/){
+    ...
+    if (...) {
+        break;
+    }
+}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>制御フロー変数を削除する</title>
+    </head>
+    <script type="text/javascript">
+        function InputCheck() {
+            var radio = document.form.radio.checked;
+            var value = [];
+            var i = 0;
+            var elem = document.getElementById('text' + i);
+            while (radio === true) {
+                if (elem.value !== '') {
+                    value.push(elem.value);
+                    if (value.length !== 3) {
+                        break;
+                    }
+                } else {
+                    alert('text' + i + ' is empty!');
+                    break;
+                }
+                i++;
+                var elem = document.getElementById('text' + i);
+            }
+            if (radio !== true) {
+                alert('please check the radio button!');
+            }
+        }
+    </script>
+    <body>
+        <form name="form" action="9.4.php" method="post">
+            Information:<input type="radio" name="radio" id="radio"><br>
+            nickname:<input type="text" name="text0" id="text0" value=""><br> 
+            email   :<input type="text" name="text1" id="text1" value=""><br> 
+            address :<input type="text" name="text2" id="text2" value=""><br>
+            <input type="button" value="InputCheck" onclick ="InputCheck();
+                    window.location.reload();">
+        </form>
+        <?php ?>
+    </body>
+</html>
+-------------------------------------------------------------
+例9.2-1
+[修正前]
+class LargeClass {
+    //巨大なクラスである
+    $str = "";
+    function Method1() {
+        $str = 'abc';
+        Method2();
+    }
+    function Method2() {
+        //$strを使っている
+    }
+    //$strを使っていないメソッドがたくさんある
+}
+[修正後]
+方法1：
+class LargeClass {
+    //巨大なクラスである
+    function Method1() {
+        $str = 'abc';
+        Method2($str);
+    }
+    function Method2($string) {
+        //$strを使っている
+    }
+    //その他のメソッドは$strが見えない
+}
+
+方法2：
+$str = ""; ⇒ staitc $str = "";
+方法3：
+大きなクラスを小さなクラスに分割することだ。
+-------------------------------------------------------------
+例9.2-2
+[修正前]
+PaymentInfo* info = database.ReadPaymentInfo();
+if(info){
+	cout<<"User paid:"<<info->amount()<<endl;
+}
+[修正後]
+if(PaymentInfo* info = database.ReadPaymentInfo()){
+	cout<<"User paid:"<<info->amount()<<endl;
+}
+
+-------------------------------------------------------------
+例9.2-2
+[修正前]
+PaymentInfo* info = database.ReadPaymentInfo();
+if(info){
+	cout<<"User paid:"<<info->amount()<<endl;
+}
+[修正後]
+if(PaymentInfo* info = database.ReadPaymentInfo()){
+	cout<<"User paid:"<<info->amount()<<endl;
+}
+-------------------------------------------------------------
+例9.2-3
+[修正前]
+submitted = false; //注意：グローバル変数
+var submit_form = function(form_name){
+	if(submitted){
+		return; //二重投稿禁止
+	}
+	submitted = true;
+};
+
+[修正後]
+
+    var submit_form = (function () {
+        submitted = false; //注意：以下の関数からしかアクセスされない
+
+        return function (form_name) {
+            if (submitted) {
+                return; //二重投稿禁止
+            }
+            submitted = true;
+        };
+    }());
+
+
+
+-------------------------------------------------------------
+例9.2-4
+[修正前]
+<script type="text/javascript">
+    var f = function () {
+        //危険：'i'は'var'で宣言されていない！
+        for(i = 0; i<2; i+= 1){
+            alert('function:'+i);
+        }
+    };
+    f();
+    alert(i);
+</script>
+[修正後]
+<script type="text/javascript">
+    var f = function () {
+        for(var i = 0; i<2; i+= 1){
+            alert('function:'+i);
+        }
+    };
+    f();
+    alert(i); //グローバル変数iが宣言されません
+</script>
+
+-------------------------------------------------------------
+例9.2-5
+if(){
+	int x = 1;
+}
+x++; //コンパイルエラー！'x'は未定義です。
+[修正前]
+#ここまではexample_valueを使っていない。
+    var values = ['1', '0', '3', '4'];
+    if (values.length > 0) {
+        for (var i = 0; i < values.length; i++) {
+            if (values[i] > 0) {
+                example_value = values[i];
+                break;
+            }
+        }
+    }
+    var example_to_values = [];
+    for (var i = 0; i<values.length; i++) {
+        example_to_values.push(example_value);
+    }
+
+
+[修正後]
+    var values = ['1', '0', '3', '4'];
+    var example_value = "";
+    if (values.length > 0) {
+        for (var i = 0; i < values.length; i++) {
+            if (values[i] > 0) {
+                example_value = values[i];
+                break;
+            }
+        }
+    }
+    var example_to_values = [];
+    if (example_value){
+        for (var i = 0; i < values.length; i++) {
+            example_to_values.push(example_value);
+        }
+    }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    var values = ['1', '0', '3', '4'];
+    if (values.length > 0) {
+        for (var i = 0; i < values.length; i++) {
+            if (values[i] > 0) {
+                ExampleToValues(values[i]);
+                break;
+            }
+        }
+    }
+    
+    function ExampleToValues(value){
+        var example_to_values = [];
+        for (var i = 0; i < values.length; i++) {
+            example_to_values.push(value);
+        }
+    }
+
+-------------------------------------------------------------
+例9.3
+変数の変更箇所はできるだけ少なくします。
+変数が絶えず変更され続けると、現在値は判断しにくくなります。
+変数は一度だけ書き込むというと、定数を使いましょう。
+// ページング定数 - 一ページ表示件数
+define('PAGINATOR_PERPAGE', 10);
+// ページング定数 - 表示範囲ページ数
+define('PAGINATOR_RANGE', 10);
+
+
+-------------------------------------------------------------
+例9.4
+[修正前]
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script type="text/javascript">
+            function SetFirstEmptyInput(new_value){    
+                var found = false;
+                var i = 1;
+                var elem = document.getElementById('input' + i);
+                while(elem !== null){
+                    if(elem.value === ''){
+                        found =true;
+                        break;
+                    }
+                    i++;
+                    elem = document.getElementById('input' + i);
+                }
+                if(found) elem.value = new_value; 
+            }; 
+            
+        </script>
+    </head>
+    <body>
+        <form action="9.4.php" method="post">
+            <input type="text" id="input1" value="apple">
+            <input type="text" id="input2" value="orange">
+            <input type="text" id="input3" value="">
+            <input type="text" id="input4" value="banana">
+            <input type="button" value="SetFirstEmptyInput" 
+            onclick ="SetFirstEmptyInput('new_value')">
+        </form>
+        <?php ?>
+    </body>
+</html>
+
+
+
+[修正後]
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script type="text/javascript">
+            function SetFirstEmptyInput(new_value){    
+                var i = 1;
+                var elem = document.getElementById('input' + i);
+                while(elem !== null){
+                    if(elem.value === ''){
+                        elem.value = new_value;
+                        return elem;
+                    }
+                    i++;
+                    elem = document.getElementById('input' + i);
+                }
+                return null;
+            }
+        </script>
+    </head>
+    <body>
+        <form action="9.4.php" method="post">
+            <input type="text" id="input1" value="apple">
+            <input type="text" id="input2" value="orange">
+            <input type="text" id="input3" value="">
+            <input type="text" id="input4" value="banana">
+            <input type="button" value="SetFirstEmptyInput" 
+            onclick ="SetFirstEmptyInput('new_value')">
+        </form>
+        <?php ?>
+    </body>
+</html>
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script type="text/javascript">
+            function SetFirstEmptyInput(new_value) {
+                for (var i = 1; ; i++) {
+                    var elem = document.getElementById('input' + i);
+                    if (elem === null) {
+                        return null;
+                    }
+                    if (elem.value === '') {
+                        elem.value = new_value;
+                        return elem;
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form action="9.4.php" method="post">
+            <input type="text" id="input1" value="apple">
+            <input type="text" id="input2" value="orange">
+            <input type="text" id="input3" value="">
+            <input type="text" id="input4" value="banana">
+            <input type="button" value="SetFirstEmptyInput" 
+            onclick ="SetFirstEmptyInput('new_value')">
+        </form>
+        <?php?>
+    </body>
+</html>
+-------------------------------------------------------------
