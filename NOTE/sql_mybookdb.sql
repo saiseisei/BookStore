@@ -28,6 +28,13 @@ create table if not exists bookstoredb.orderinfo(
 	BUYDATE date
 )ENGINE=InnoDB, CHARSET = utf8, COMMENT = '‘—Şw”ƒ—š—ğ';
 
+create table if not exists bookstoredb.category(
+	CATEGORYID integer auto_increment primary key,
+	CATEGORY varchar(30) unique key not null,
+	COMMENT varchar(300),
+	DELFLAG int(1)
+)ENGINE = InnoDB, CHARSET = utf8, COMMENT = '‘—ŞƒJƒeƒSƒŠî•ñ';   
+
 
 ALTER TABLE `bookstoredb`.`info_order` 
 ADD INDEX `FK_USERNAME_idx` (`USERNAME` ASC),

@@ -129,3 +129,16 @@ INSERT INTO `bookstoredb`.`orderinfo` (`NO`, `USERNAME`, `ISBN`, `QUANTITY`, `BU
 INSERT INTO `bookstoredb`.`orderinfo` (`NO`, `USERNAME`, `ISBN`, `QUANTITY`, `BUYDATE`) VALUES ('42', 'kanda', '978-4-7806-0454-2', '2', '2016/2/17');
 INSERT INTO `bookstoredb`.`orderinfo` (`NO`, `USERNAME`, `ISBN`, `QUANTITY`, `BUYDATE`) VALUES ('43', 'kanda', '978-4-7807-0360-44', '1', '2016/2/17');
 INSERT INTO `bookstoredb`.`orderinfo` (`NO`, `USERNAME`, `ISBN`, `QUANTITY`, `BUYDATE`) VALUES ('44', 'kanda', '978-4-7807-0360-40', '1', '2016/2/17');
+
+
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('1', '小説', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('2', '文芸', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('3', '教養', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('4', '経済', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('5', '社会', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('6', '経営', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('7', '人文', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('8', '語学', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('9', '医学・薬学', '0');
+INSERT INTO `bookstoredb`.`category` (`CATEGORYID`, `CATEGORY`, `DELFLAG`) VALUES ('10', 'コンピュータ', '0');
+
