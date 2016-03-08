@@ -64,12 +64,13 @@ class BookForm extends Form {
         $this->add(array(
             'name' => 'category',
             'type' => 'select',
+            'value' => 2,
             'attributes' => array(
                 'id' => 'category',
             ),
             'options' => array(
-                'empty_option' => 'Choose the category',
                 'value_options' => array(
+                    '0' => 'Choose the category',
                     '1' => '小説',
                     '2' => '文芸',
                     '3' => '教養',

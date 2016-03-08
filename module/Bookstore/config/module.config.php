@@ -71,6 +71,19 @@ return array(
         ),
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'TableManager'  => 'Bookstore\Service\TableFactory',
+            'SessionManager'=> '\Zend\Session\Service\SessionManagerFactory',
+            'CodeManager'   => 'Bookstore\Service\CodeFactory',
+        ),
+        'session' => array(
+            'config' => array(
+                'class'   => '\Zend\Session\Config\SessionConfig',
+                    'options' => array(
+                        'name'                => 'Bookstore',
+                        'remember_me_seconds' => 86400,
+                ),
+            ),
+            'storage' => '\Zend\Session\Storage\SessionArrayStorage',
         ),
     ),
     'translator' => array(
