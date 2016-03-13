@@ -1,34 +1,75 @@
-<div><br><br><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">ADD A BOOK</a><br>
-    <table border = 3>
-        <tr>
-            <td>ISBN</td>
-            <td>TITLE</td>
-            <td>SUB TITLE</td>
-            <td>WRITER</td>
-            <td>PRICE</td>
-            <td>CATEGORY</td>
-            <td>COMMENT</td>
-            <td>EDIT</td>
-            <td>DELECT</td>
-        </tr>
-        <?php
-        $books = $this->data;
-        if (count($books) > 0):
+<div>
+    <ul>
+        <li><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">ADD A BOOK</a></li>
+    </ul>
+    <div>
+        <table border = 3 style="table-layout: fixed;">
+            <tr>
+                <td style="width: 40px;">NO</td>
+                <td style="width: 150px;">ISBN</td>
+                <td class="nowrap">TITLE</td>
+                <td class="nowrap">SUB TITLE</td>
+                <td class="nowrap">WRITER</td>
+                <td style="width: 40px;">PRICE</td>
+                <td style="width: 40px;">CATEGORY</td>
+                <td style="width: 40px;">COMMENT</td>
+                <td style="width: 40px;">EDIT</td>
+                <td style="width: 40px;">DELECT</td>
+            </tr>
+            <?php
+            $books = $this->data['books'];
+            if (count($books) > 0):
             foreach ($books as $row):
-                ?>
-                <tr>
-                    <td width = '150'><?= $this->escapeHtml($row['ISBN']); ?></td>
-                    <td width = '200'><?= $this->escapeHtml($row['TITLE']); ?></td>
-                    <td><?= $this->escapeHtml($row['SUBTITLE']); ?></td>
-                    <td><?= $this->escapeHtml($row['WRITER']); ?></td>
-                    <td><?= $this->escapeHtml($row['PRICE']); ?></td>
-                    <td><?= $this->escapeHtml($row['CATEGORY']); ?></td>
-                    <td><?= $this->escapeHtml($row['COMMENT']); ?></td>
-                    <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row->isbn ?>">EDIT</a></td>
-                    <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row->isbn ?>">DELETE</a></td>
-                </tr>
-                <?php
+            ?>
+            <tr>
+                <td><?= $this->escapeHtml($row['NO']); ?></td>
+                <td><?= $this->escapeHtml($row['ISBN']); ?></td>
+                <td><p class="nowrap"><?= $this->escapeHtml($row['TITLE']); ?></p></td>
+                <td><p class="nowrap"><?= $this->escapeHtml($row['SUBTITLE']); ?></p></td>
+                <td><p class="nowrap"><?= $this->escapeHtml($row['WRITER']); ?></p></td>
+                <td><?= $this->escapeHtml($row['PRICE']); ?></td>
+                <td><?= $this->escapeHtml($row['CATEGORY']); ?></td>
+                <td><?= $this->escapeHtml($row['COMMENT']); ?></td>
+                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row['NO'] ?>">EDIT</a></td>
+                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row['NO'] ?>">DELETE</a></td>
+            </tr>
+            <?php
             endforeach;
-        endif;?>
-    </table><br><br><br>
+            endif;
+            ?>
+        </table>
+    </div>
+
+    <div align='right'>
+        <table>
+            <tr>
+
+                <?php
+                $form->setAttribute('id', 'page');
+                $form->prepare();
+                echo $this->form()->openTag($form);
+                ?>
+                <td>
+                    TOTAL /CURRENT : <?php echo $this->totalPages.'/'. $this->data['currentPage']; ?>
+                </td>
+                <td>
+                    <?php echo $this->formRow($form->get('goToPage')); ?>
+                </td>
+                <td>
+                    <input type="submit" name="GO" value="GO">
+                </td>
+                <td>
+                    <?php if ($this->showBefore === TRUE) {?>
+                    <input type="submit" name="BEFORE" value="BEFORE">
+                    <?php }?>
+                </td>
+                <td>
+                    <?php if ($this->showNext === TRUE) {?>
+                    <input type="submit" name="NEXT" value="NEXT">
+                    <?php }?>
+                </td>
+                <?php echo $this->form()->closeTag(); ?>
+            </tr>
+        </table>
+    </div>
 </div>

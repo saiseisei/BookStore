@@ -8,7 +8,6 @@
     ?>
     <h3 align='left'> ADD A BOOK</h3>
     <table>
-
         <tr>
             <td>ISBN:</td><td><?php echo $this->formRow($form->get('isbn')) ?></td>
         </tr>
@@ -25,18 +24,20 @@
             <td>PRICE:</td><td><?php echo $this->formRow($form->get('price')) ?></td>
         </tr>
         <tr>
-            <td>CATEGORY:</td><td><?php echo $this->formSelect($form->getAttributes('category',array('KEY'=>'VALUE'))); ?></td>
+            <td>CATEGORY:</td><td><?php echo $this->formRow($form->get('category')); ?></td>
         </tr>
         <tr>
             <td>COMMENT:</td><td><?php echo $this->formRow($form->get('comment')) ?></td>
         </tr>
         <tr>
-            <td><?php if ($this->addFlag === true): echo 'SUCCESS！';else: ?><input type="submit" name="add" id=" " size="30" value="ADD" /><?php endif; ?></td>
+            <td><?php if ($this->addFlag === true): ?> <p style="color:red;">Success in adding a book!</p><?php else: ?><input type="submit" name="add" id=" " size="30" value="ADD" /><?php endif; ?></td>
         </tr>
     </table><br><br><br>
     <span>
-        <a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a>
-        <a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">CONTINUE TO ADD</a>
+        <ul>
+            <li><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a></li>
+            <li><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">CONTINUE TO ADD</a></li>
+        </ul>
     </span>
-<?php echo $this->form()->closeTag(); ?>
+    <?php echo $this->form()->closeTag(); ?>
 </div>

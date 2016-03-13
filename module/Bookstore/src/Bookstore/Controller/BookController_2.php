@@ -14,7 +14,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container as SessionContainer;
 use Zend\View\Model\ViewModel;
 use Bookstore\Form\BookForm;
-use \Bookstore\Form\PageForm;
+use \Bookstore\Form\PageFrom;
 
 define('RECORDS_IN_ONE_PAGE', 15);
 
@@ -22,52 +22,54 @@ class BookController extends AbstractActionController {
 
     //List all the books
     public function indexAction() {
-
         $view = new ViewModel;
-        $form = new PageForm();
         $request = $this->getRequest();
-        $session = new SessionContainer;
+        $form = new BookForm();
+        $bookInfo = array(); //get_object_vars
+        $addFlag = false;
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
-        $rowsNum = $bookInfoTable->countBooksNum();
-        $totalPages = ceil($rowsNum / RECORDS_IN_ONE_PAGE);
+        $bookInfo = $bookInfoTable->fetchAll();
 
+        $categoryTable = $this->getServiceLocator()->get('Bookstore\Model\CategoryTable');
+        $category = $categoryTable->getCategory($option);
+        $bookInfo->category = $category['category'];
+
+
+        $totalPages = ceil(count($bookInfo) / 15);
         if ($request->isPost()) {
             $post = $request->getPost();
-            $form->setInputFilter($form->getInputFilter()); //array_slice($post,1)
+            $form->setInputFilter($form->getInputFilter());
             $form->setData($post);
-            $currentPage = $session->currentPage;
-            $pagination = $this->Pagination($currentPage, $totalPages, $post);
-            $session->post = $post;
-            $session->currentPage = $pagination['currentPage'];
-        } else {
-            $currentPage = 1;
-            $post = array();
-            $form->setData($post);
-            $pagination = $this->Pagination($currentPage, $totalPages, $post);
-            //$session->pagination = $pagination;
-            $session->currentPage = $currentPage;
-        }
+//\Zend\Debug\Debug::dump($bookInfo->category) ;
+            if ($form->isValid() === true) {
+                $option = $post->category;
+                echo 123;
+                \Zend\Debug\Debug::dump($post);
+//            switch ($post) {
+//                case 'BEFORE': echo 'BEFORE';
+//                    die;
+//                    break;
+//                case 'NEXT': echo 'NEXT';
+//                    die;
+//                    break;
+//                case 'GO': echo 'GO';
+//                    die;
+//                    break;
+//                default: echo 'OTHER';
+//                    break;
+//            }
+            }
 
-        $showBefore = TRUE;
-        $showNext = TRUE;
-        if ($session->currentPage == 1) {
-            $showBefore = FALSE;
-        }
-        if ($session->currentPage == $totalPages) {
-            $showNext = FALSE;
-        }
 
-        //\Zend\Debug\Debug::dump($pagination);die;
-        
-        $view->data = $pagination;
-        $view->totalPages = $totalPages;
-        $view->showBefore = $showBefore;
-        $view->showNext = $showNext;
-        $view->title = "Books List";
-        $view->form = $form;
-        $view->setTemplate("bookstore/book/index");
-        return $view;
+            //\Zend\Debug\Debug::dump($books);
+            $view->totalPages = $totalPages;
+            $view->data = $bookInfo;
+            $view->title = "Books List";
+            $view->form = $form;
+            $view->setTemplate("bookstore/book/index");
+            return $view;
+        }
     }
 
     //Add a book
@@ -84,18 +86,18 @@ class BookController extends AbstractActionController {
             $bookInfo = $request->getPost();
             $form->setInputFilter($form->getInputFilter());
             $form->setData($bookInfo);
+//\Zend\Debug\Debug::dump($bookInfo->category) ;
             if ($form->isValid() === true) {
                 $option = $bookInfo->category;
                 $categoryTable = $this->getServiceLocator()->get('Bookstore\Model\CategoryTable');
                 $category = $categoryTable->getCategory($option);
-                $bookInfo->category = $category['category']; 
+                $bookInfo->category = $category['category'];
                 $bookInfoTable->addBook($bookInfo);
                 $addFlag = true;
             } else {
                 //error
             }
-        }
-//\Zend\Debug\Debug::dump($bookInfo);
+        }//\Zend\Debug\Debug::dump($bookInfo);
         $view->addFlag = $addFlag;
         $view->data = $bookInfo;
         $view->form = $form;
@@ -115,19 +117,15 @@ class BookController extends AbstractActionController {
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         if ($request->isGet()) {
-            $id = $this->params()->fromQuery('id', 0);
-            $row = $bookInfoTable->getBook($id);
+            $isbn = $this->params()->fromQuery('id', 0);
+            $row = $bookInfoTable->getBook($isbn);
             $session->bookInfo = $row;
         } else if ($request->isPost()) {
             $row = $session->bookInfo;
             $bookInfo = array(
                 'isbn' => $session->bookInfo->isbn,
                 'title' => $request->getPost('title'),
-                'subtitle' => $request->getPost('subtitle'),
-                'writer' => $request->getPost('writer'),
                 'price' => $request->getPost('price'),
-                'category' => $request->getPost('category'),
-                'comment' => $request->getPost('comment'),
             );
 
             $form->setInputFilter($form->getInputFilter());
@@ -175,33 +173,10 @@ class BookController extends AbstractActionController {
         return $view;
     }
 
-    public function Pagination($currentPage, $totalPages, $post) {
-
-        switch (isset($post)) { 
-            case array_key_exists('BEFORE', $post): 
-                $currentPage = $currentPage - 1;
-                break;
-            case array_key_exists('NEXT', $post): 
-                $currentPage = $currentPage + 1;
-                break;
-            case array_key_exists('GO', $post): 
-                if (isset($post['goToPage'])) {
-                    if($post['goToPage'] > 0 && $post['goToPage'] <= $totalPages){
-                        $currentPage = $post['goToPage'];
-                    }
-                } else {
-                    $currentPage = 1;
-                }
-                break;
-            default: 
-                break;
+    public function Pagination($currentPage, $totalPage) {
+        if ($currentPage < $totalPage) {
+            
         }
-        $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
-        $books = $bookInfoTable->getBooksByPage($currentPage);
-        return $pagination = array(
-            'currentPage' => $currentPage,
-            'books' => $books,
-        );
     }
 
 }

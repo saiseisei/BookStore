@@ -14,10 +14,19 @@ class BookForm extends Form {
         parent::__construct('book');
 
         $this->add(array(
+            'name' => 'NO',
+            'type' => 'text',
+            'attributes' => array(
+                'size' => 1,
+                'disabled' => 'disabled',
+            ),
+        ));
+        
+        $this->add(array(
             'name' => 'isbn',
             'type' => 'text',
             'attributes' => array(
-                'size' => 30,
+                'size' => 20,
                 'maxlength' => 30,
             ),
 //            'options' => array(
@@ -36,19 +45,19 @@ class BookForm extends Form {
 
         $this->add(array(
             'name' => 'subtitle',
-            'type' => 'text',
+            'type' => 'textarea',
             'attributes' => array(
-                'size' => 30,
-                'maxlength' => 100,
+                'rows' => 3,
+                'cols' => 20,
             ),
         ));
 
         $this->add(array(
             'name' => 'writer',
-            'type' => 'text',
+            'type' => 'textarea',
             'attributes' => array(
-                'size' => 30,
-                'maxlength' => 60,
+                'rows' => 3,
+                'cols' => 20,
             ),
         ));
 
@@ -89,7 +98,7 @@ class BookForm extends Form {
             'name' => 'comment',
             'type' => 'textarea',
             'attributes' => array(
-                'rows' => 10,
+                'rows' => 3,
                 'cols' => 40,
             ),
         ));
@@ -196,7 +205,7 @@ class BookForm extends Form {
             'name' => 'category',
             'required' => true,
         ));
-
+        
         return $inputFilter;
     }
 

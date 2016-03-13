@@ -19,6 +19,8 @@ use Bookstore\Model\UserInfoTable;
 use Bookstore\Model\UserInfo;
 use Bookstore\Model\BookInfoTable;
 use Bookstore\Model\BookInfo;
+use Bookstore\Model\CategoryTable;
+use Bookstore\Model\Category;
 
 class Module {
 
@@ -52,6 +54,7 @@ class Module {
 
         return array(
             'factories' => array(
+                //'userinfo'
                 'Bookstore\Model\UserInfoTable' => function(ServiceManager $serviceManager) {
                     $tableGateway = $serviceManager->get('UserInfoTableGateway');
                     $table = new UserInfoTable($tableGateway);
@@ -63,6 +66,7 @@ class Module {
                     $resultSetPrototype->setArrayObjectPrototype(new UserInfo());
                     return new TableGateway('userinfo', $dbAdapter, NULL, $resultSetPrototype);
                 },
+                //'bookinfo'
                 'Bookstore\Model\BookInfoTable' => function(ServiceManager $serviceManager) {
                     $tableGateway = $serviceManager->get('BookInfoTableGateway');
                     $table = new BookInfoTable($tableGateway);
@@ -73,6 +77,18 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new BookInfo());
                     return new TableGateway('bookinfo', $dbAdapter, NULL, $resultSetPrototype);
+                },
+                //'category'
+                'Bookstore\Model\CategoryTable' => function(ServiceManager $serviceManager) {
+                    $tableGateway = $serviceManager->get('CategoryTableGateway');
+                    $table = new CategoryTable($tableGateway);
+                    return $table;
+                },
+                'CategoryTableGateway' => function(ServiceManager $serviceManager) {
+                    $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Category());
+                    return new TableGateway('category', $dbAdapter, NULL, $resultSetPrototype);
                 },
             )
         );

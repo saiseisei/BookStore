@@ -2,7 +2,7 @@
 
 namespace Bookstore\Model;
 
-class BookInfo {
+class Category {
 
     public $categoryid;
     public $category;

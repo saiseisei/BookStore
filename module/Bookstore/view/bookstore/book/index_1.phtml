@@ -1,0 +1,65 @@
+        <?php
+        //echo $this->headTitle($this->title);
+        $form->setAttribute('id', 'page');
+        $form->setAttribute('action', $this->url('bookstore', array('controller' => 'index')) . '/index');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+<div><br><br><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">ADD A BOOK</a><br>
+    <table border = 3>
+        <tr>
+            <td>NO</td>
+            <td>ISBN</td>
+            <td>TITLE</td>
+            <td>SUB TITLE</td>
+            <td>WRITER</td>
+            <td>PRICE</td>
+            <td>CATEGORY</td>
+            <td>COMMENT</td>
+            <td>EDIT</td>
+            <td>DELECT</td>
+        </tr>
+        <?php
+        $books = $this->data;
+        if (count($books) > 0):
+            foreach ($books as $row):
+                ?>
+                <tr>
+                    <td><?php echo $this->formRow($form->get('NO')->setValue($row['NO']));?></td>
+                    <td width = '150'><?php echo $this->formRow($form->get('isbn')->setValue($row['ISBN']));?></td>
+                    <td width = '200'><?php echo $this->formRow($form->get('title')->setValue($row['TITLE']));?></td>
+                    <td><?php echo $this->formRow($form->get('subtitle')->setValue($row['SUBTITLE']));?></td>
+                    <td><?php echo $this->formRow($form->get('writer')->setValue($row['WRITER']));?></td>
+                    <td><?php echo $this->formRow($form->get('price')->setValue($row['PRICE']));?></td>
+                    <td><?php 
+                    if (empty($row['CATEGORY'])) {
+                        echo $this->formSelect($form->get('category'));
+                    }else {
+                        echo $this->formRow($form->get('category')->setOption($row['CATEGORY']));
+                    }
+                    ?></td>
+                    <td><?php echo $this->formRow($form->get('comment')->setValue($row['COMMENT']));?></td>
+                    <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row['ISBN'] ?>">EDIT</a></td>
+                    <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row['ISBN'] ?>">DELETE</a></td>
+                </tr>
+                <?php
+            endforeach;
+        endif;
+        ?>
+    </table>
+    <div align='right'>
+
+        TOTAL PAGES:<?php echo $this->totalPages; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <?php //echo $this->formRow($form->get('BEFORE'));?>
+        <?php //echo $this->formRow($form->get('NEXT'));?>
+        <?php //echo $this->formRow($form->get('GO'));?>
+        
+        <input type="button" name="BEFORE" value="BEFORE">&nbsp;
+        <input type="button" name="NEXT" value="NEXT">&nbsp;
+        <!--<input type="text" name="goToPage" value="" size="1">-->
+        <?php echo $this->formRow($form->get('goToPage'));?>
+        <input type="button" name="GO" value="GO">
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+    <br><br><br>
+</div>
