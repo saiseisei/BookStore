@@ -1,43 +1,85 @@
+<script language="JavaScript" type="text/javascript">
+    function allChecked() {
+        var flag = document.book.allcheck.checked;
+        var subCheckElems = document.getElementsByName("subcheck");
+        for (var index = 0; index < subCheckElems.length; index++) {
+            subCheckElems[index].checked = flag;
+        }
+        return true;
+    }
+
+    function getDeleteObj() {
+        var params = "delete?";
+        var counter = 0;
+        var allCheck = document.getElementsByName('allcheck');
+        var subCheckElems = document.getElementsByName('subcheck');
+        var isbns = document.getElementsByName('isbn');
+//        if(allCheck.checked === true){
+//            
+//        }else if(subCheckElems.length > 0){
+//            
+//        }
+        for (var index = 0; index < subCheckElems.length; index++) {
+            isbn = escape(isbns[index].value);
+            if (subCheckElems[index].checked === true) {
+                if (counter === 0) {
+                    param = "deleteObjs[" + counter + "]=" + isbn;
+                } else {
+                    param = "&deleteObjs[" + counter + "]=" + isbn;
+                }
+                params = params.concat(param);
+                counter++;
+            }
+        }
+        location.href = params;
+        return false;
+    }
+</script>
 <div>
     <ul>
-        <li><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/add' ?>">ADD A BOOK</a></li>
+        <li><input type="button" name="ADD" value="ADD BOOK" onclick="location.href = 'add'"></li>
+        <li><input type="button" name="DELETE" value="DELETE BOOKS" onclick="getDeleteObj()"></li>
     </ul>
     <div>
-        <table border = 3 style="table-layout: fixed;">
-            <tr>
-                <td style="width: 40px;">NO</td>
-                <td style="width: 150px;">ISBN</td>
-                <td class="nowrap">TITLE</td>
-                <td class="nowrap">SUB TITLE</td>
-                <td class="nowrap">WRITER</td>
-                <td style="width: 40px;">PRICE</td>
-                <td style="width: 40px;">CATEGORY</td>
-                <td style="width: 40px;">COMMENT</td>
-                <td style="width: 40px;">EDIT</td>
-                <td style="width: 40px;">DELECT</td>
-            </tr>
-            <?php
-            $books = $this->data['books'];
-            if (count($books) > 0):
-            foreach ($books as $row):
-            ?>
-            <tr>
-                <td><?= $this->escapeHtml($row['NO']); ?></td>
-                <td><?= $this->escapeHtml($row['ISBN']); ?></td>
-                <td><p class="nowrap"><?= $this->escapeHtml($row['TITLE']); ?></p></td>
-                <td><p class="nowrap"><?= $this->escapeHtml($row['SUBTITLE']); ?></p></td>
-                <td><p class="nowrap"><?= $this->escapeHtml($row['WRITER']); ?></p></td>
-                <td><?= $this->escapeHtml($row['PRICE']); ?></td>
-                <td><?= $this->escapeHtml($row['CATEGORY']); ?></td>
-                <td><?= $this->escapeHtml($row['COMMENT']); ?></td>
-                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row['NO'] ?>">EDIT</a></td>
-                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row['NO'] ?>">DELETE</a></td>
-            </tr>
-            <?php
-            endforeach;
-            endif;
-            ?>
-        </table>
+        <form name="book">
+            <table border = 3 style="table-layout: fixed;" name="booktable">
+                <tr>
+                    <td style="width: 40px;">NO</td>
+                    <td style="width: 150px;">ISBN</td>
+                    <td class="nowrap">TITLE</td>
+                    <td class="nowrap">SUB TITLE</td>
+                    <td class="nowrap">WRITER</td>
+                    <td style="width: 40px;">PRICE</td>
+                    <td style="width: 40px;">CATEGORY</td>
+                    <td style="width: 40px;">COMMENT</td>
+                    <td style="width: 40px;">EDIT</td>
+                    <td align="center">select all<br><input type="checkbox" name="allcheck" id="allcheck" onClick="allChecked()"></td>
+                    <!--<td style="width: 40px;">DELECT</td>-->
+                </tr>
+                <?php
+                $books = $this->data['books'];
+                if (count($books) > 0):
+                    foreach ($books as $row):
+                        ?>
+                        <tr>
+                            <td><?= $this->escapeHtml($row['NO']); ?></td>
+                            <td><input type="hidden" name="isbn" value="<?= $this->escapeHtml($row['ISBN']); ?>"><?= $this->escapeHtml($row['ISBN']); ?></td>
+                            <td><p class="nowrap"><?= $this->escapeHtml($row['TITLE']); ?></p></td>
+                            <td><p class="nowrap"><?= $this->escapeHtml($row['SUBTITLE']); ?></p></td>
+                            <td><p class="nowrap"><?= $this->escapeHtml($row['WRITER']); ?></p></td>
+                            <td><?= $this->escapeHtml($row['PRICE']); ?></td>
+                            <td><?= $this->escapeHtml($row['CATEGORY']); ?></td>
+                            <td><?= $this->escapeHtml($row['COMMENT']); ?></td>
+                            <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row['NO'] ?>">EDIT</a></td>
+                            <td align="center"><input type="checkbox" name="subcheck" id="subcheck"></td>
+                            <!--<td><a href="<?php //$this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row['NO']  ?>">DELETE</a></td>-->
+                        </tr>
+                        <?php
+                    endforeach;
+                endif;
+                ?>
+            </table>
+        </form>
     </div>
 
     <div align='right'>
@@ -50,7 +92,7 @@
                 echo $this->form()->openTag($form);
                 ?>
                 <td>
-                    TOTAL /CURRENT : <?php echo $this->totalPages.'/'. $this->data['currentPage']; ?>
+                    TOTAL /CURRENT : <?php echo $this->totalPages . '/' . $this->data['currentPage']; ?>
                 </td>
                 <td>
                     <?php echo $this->formRow($form->get('goToPage')); ?>
@@ -59,14 +101,14 @@
                     <input type="submit" name="GO" value="GO">
                 </td>
                 <td>
-                    <?php if ($this->showBefore === TRUE) {?>
-                    <input type="submit" name="BEFORE" value="BEFORE">
-                    <?php }?>
+                    <?php if ($this->showBefore === TRUE) { ?>
+                        <input type="submit" name="BEFORE" value="BEFORE">
+                    <?php } ?>
                 </td>
                 <td>
-                    <?php if ($this->showNext === TRUE) {?>
-                    <input type="submit" name="NEXT" value="NEXT">
-                    <?php }?>
+                    <?php if ($this->showNext === TRUE) { ?>
+                        <input type="submit" name="NEXT" value="NEXT">
+                    <?php } ?>
                 </td>
                 <?php echo $this->form()->closeTag(); ?>
             </tr>

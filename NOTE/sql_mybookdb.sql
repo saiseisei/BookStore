@@ -1,5 +1,5 @@
 create table if not exists bookstoredb.bookinfo(
-	NO integer auto_increment primary key,,
+	NO integer auto_increment primary key,
 	ISBN varchar(30) unique key not null,
 	TITLE varchar(50),
 	SUBTITLE varchar(100),
@@ -36,18 +36,18 @@ create table if not exists bookstoredb.category(
 )ENGINE = InnoDB, CHARSET = utf8, COMMENT = 'èëóﬁÉJÉeÉSÉäèÓïÒ';   
 
 
-ALTER TABLE `bookstoredb`.`info_order` 
+
+ALTER TABLE `bookstoredb`.`orderinfo` 
 ADD INDEX `FK_USERNAME_idx` (`USERNAME` ASC),
 ADD INDEX `FK_BOOKISBN_idx` (`ISBN` ASC);
-ALTER TABLE `bookstoredb`.`info_order` 
+ALTER TABLE `bookstoredb`.`orderinfo` 
 ADD CONSTRAINT `FK_USERNAME`
   FOREIGN KEY (`USERNAME`)
-  REFERENCES `bookstoredb`.`info_user` (`USERNAME`)
+  REFERENCES `bookstoredb`.`userinfo` (`USERNAME`)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_BOOKISBN`
   FOREIGN KEY (`ISBN`)
-  REFERENCES `bookstoredb`.`info_book` (`ISBN`)
+  REFERENCES `bookstoredb`.`bookinfo` (`ISBN`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
-

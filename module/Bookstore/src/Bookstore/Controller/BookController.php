@@ -34,18 +34,24 @@ class BookController extends AbstractActionController {
 
         if ($request->isPost()) {
             $post = $request->getPost();
-            $form->setInputFilter($form->getInputFilter()); //array_slice($post,1)
+            $form->setInputFilter($form->getInputFilter()); 
             $form->setData($post);
             $currentPage = $session->currentPage;
             $pagination = $this->Pagination($currentPage, $totalPages, $post);
             $session->post = $post;
             $session->currentPage = $pagination['currentPage'];
         } else {
-            $currentPage = 1;
+            $currentPage = $session->currentPage;
+            if (empty($currentPage)) {
+                $currentPage = 1;
+            } else if ($currentPage > $totalPages) {
+                $currentPage = $currentPage - 1;
+            } else {
+                $currentPage = $currentPage;
+            }
             $post = array();
             $form->setData($post);
             $pagination = $this->Pagination($currentPage, $totalPages, $post);
-            //$session->pagination = $pagination;
             $session->currentPage = $currentPage;
         }
 
@@ -76,7 +82,7 @@ class BookController extends AbstractActionController {
         $view = new ViewModel;
         $request = $this->getRequest();
         $form = new BookForm();
-        $bookInfo = array(); //get_object_vars
+        $bookInfo = array(); 
         $addFlag = false;
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
@@ -85,10 +91,10 @@ class BookController extends AbstractActionController {
             $form->setInputFilter($form->getInputFilter());
             $form->setData($bookInfo);
             if ($form->isValid() === true) {
-                $option = $bookInfo->category;
+                $option = $bookInfo->CATEGORY;
                 $categoryTable = $this->getServiceLocator()->get('Bookstore\Model\CategoryTable');
                 $category = $categoryTable->getCategory($option);
-                $bookInfo->category = $category['category']; 
+                $bookInfo->CATEGORY = $category['CATEGORY']; 
                 $bookInfoTable->addBook($bookInfo);
                 $addFlag = true;
             } else {
@@ -110,24 +116,23 @@ class BookController extends AbstractActionController {
         $request = $this->getRequest();
         $form = new BookForm();
         $bookInfo = array();
-        $row = null;
         $editFlag = false;
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         if ($request->isGet()) {
             $id = $this->params()->fromQuery('id', 0);
-            $row = $bookInfoTable->getBook($id);
-            $session->bookInfo = $row;
+            $bookInfo = $bookInfoTable->getBook($id);
+            $session->bookInfo = $bookInfo;
         } else if ($request->isPost()) {
-            $row = $session->bookInfo;
             $bookInfo = array(
-                'isbn' => $session->bookInfo->isbn,
-                'title' => $request->getPost('title'),
-                'subtitle' => $request->getPost('subtitle'),
-                'writer' => $request->getPost('writer'),
-                'price' => $request->getPost('price'),
-                'category' => $request->getPost('category'),
-                'comment' => $request->getPost('comment'),
+                'NO' => $session->bookInfo['NO'],
+                'ISBN' => $session->bookInfo['ISBN'],
+                'TITLE' => $request->getPost('TITLE'),
+                'SUBTITLE' => $request->getPost('SUBTITLE'),
+                'WRITER' => $request->getPost('WRITER'),
+                'PRICE' => $request->getPost('PRICE'),
+                'CATEGORYID' => $request->getPost('CATEGORY'),
+                'COMMENT' => $request->getPost('COMMENT'),
             );
 
             $form->setInputFilter($form->getInputFilter());
@@ -135,43 +140,36 @@ class BookController extends AbstractActionController {
 
             if ($form->isValid() === true) {
                 $bookInfoTable->editBook($bookInfo);
-                $view->dataAfter = $bookInfo;
                 $editFlag = true;
+                //return $this->redirect()->toUrl('/bookstore/book/index');
             } else {
                 //error
             }
         }
+        $view->bookInfo = $bookInfo;
         $view->editFlag = $editFlag;
-        $view->dataBefore = $row;
         $view->form = $form;
         $view->title = "Edit A Book";
         return $view;
     }
 
-    //Delete a book
+    //Delete books
     public function deleteAction() {
         $session = new SessionContainer;
         $request = $this->getRequest();
         $view = new ViewModel;
-        $row = null;
+        $isbns = array();
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
         if ($request->isGet()) {
-            $isbn = $this->params()->fromQuery('id', 0);
-            $row = $bookInfoTable->getBook($isbn);
-            if (!$row) {
-                throw new \Exception("Could not find $isbn");
-            }
-            $session->bookInfo = $row;
-            $view->data = $row;
-        } elseif ($request->isPost()) {
-            if ($request->getPost()->yes) {
-                $bookInfoTable->deleteBook($session->bookInfo);
-            }
-            unset($session->bookInfo);
+            $isbns = $this->params()->fromQuery('deleteObjs', 0);
+            $session->isbns = $isbns;
+            $bookInfoTable->deleteBook($session->isbns);
+            unset($session->isbns);
             return $this->redirect()->toUrl('/bookstore/book/index');
         }
-        $view->title = "Delete A Book";
+        
+        $view->title = "Delete Books";
         return $view;
     }
 
@@ -194,6 +192,11 @@ class BookController extends AbstractActionController {
                 }
                 break;
             default: 
+                if (empty($currentPage)) {
+                    $currentPage = 1;
+                } else {
+                    $currentPage = $currentPage;
+                }
                 break;
         }
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');

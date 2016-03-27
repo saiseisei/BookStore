@@ -1,72 +1,33 @@
 <div>
     <?php
-    //$this->getRequest()->getPost('foo');$this->getRequest()->getQuery('foo');
-    //if ($this->getRequest()->getPost('edit')):
-    $bookInfoAfter = $this->dataAfter;
-    $bookInfoBefore = $this->dataBefore;
-    if (!isset($bookInfoAfter)):
-        $form->setAttribute('id', 'book');
-        $form->prepare();
-        echo $this->form()->openTag($form);
-        if (count($bookInfoBefore) > 0):
-            ?>
-                <h3 align='left'> ADD A BOOK</h3>
-    <table>
-        <tr>
-            <td>ISBN:</td><td><?php echo $this->formRow($form->get('isbn')) ?></td>
-        </tr>
-        <tr>
-            <td>TITLE:</td><td><?php echo $this->formRow($form->get('title')) ?></td>
-        </tr>
-        <tr>
-            <td>SUBTITLE:</td><td><?php echo $this->formRow($form->get('subtitle')) ?></td>
-        </tr>
-        <tr>
-            <td>WRITER:</td><td><?php echo $this->formRow($form->get('writer')) ?></td>
-        </tr>
-        <tr>
-            <td>PRICE:</td><td><?php echo $this->formRow($form->get('price')) ?></td>
-        </tr>
-        <tr>
-            <td>CATEGORY:</td><td><?php echo $this->formRow($form->get('category')); ?></td>
-        </tr>
-        <tr>
-            <td>COMMENT:</td><td><?php echo $this->formRow($form->get('comment')) ?></td>
-        </tr>
-        <tr>
-            <td><?php if ($this->addFlag === true): ?> <p style="color:red;">Success in adding a book!</p><?php else: ?><input type="submit" name="add" id=" " size="30" value="ADD" /><?php endif; ?></td>
-        </tr>
-    </table>
-        <?php
-        endif;
-        echo $this->form()->closeTag();
-    else:
+    $bookInfo = $this->bookInfo;
+    $form->setAttribute('id', 'book');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    if (count($bookInfo) > 0) {
         ?>
+        <h3 align='left'> EDIT A BOOK</h3>
         <table>
-            <tr>
-                <td>ISBN</td>
-                <td>TITLE</td>
-                <td>TITLE(NEW)</td>
-                <td>PRICE</td>
-                <td>PRICE(NEW)</td>
-            </tr>
-            <tr>
-                <td><?= $this->escapeHtml($bookInfoAfter['isbn']); ?></td>
-                <td><?= $this->escapeHtml($bookInfoBefore->title); ?></td>
-                <td><?= $this->escapeHtml($bookInfoAfter['title']); ?></td>
-                <td><?= $this->escapeHtml($bookInfoBefore->price); ?></td>
-                <td><?= $this->escapeHtml($bookInfoAfter['price']); ?></td>
-                <td><?=($this->editFlag==true)? 'SUCCESS！':NULL;?></td>
-            </tr>
-            <tr>
-                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a></td>
-                <td></td><td></td><td></td>
-                <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id='.$bookInfoAfter['isbn'] ?>">CONTINUE TO EDIT</a></td>
+            <tr><td>NO:</td><td><?php echo $this->escapeHtml($bookInfo['NO']); ?></td></tr>
+            <tr><td>ISBN:</td><td><?php echo $this->escapeHtml($bookInfo['ISBN']); ?></td></tr>
+            <tr><td>TITLE:</td><td><?php echo $this->formRow($form->get('TITLE')->setValue($bookInfo['TITLE'])); ?></td></tr>
+            <tr><td>SUBTITLE:</td><td><?php echo $this->formRow($form->get('SUBTITLE')->setValue($bookInfo['SUBTITLE'])); ?></td></tr>
+            <tr><td>WRITER:</td><td><?php echo $this->formRow($form->get('WRITER')->setValue($bookInfo['WRITER'])); ?></td></tr>
+            <tr><td>PRICE:</td><td><?php echo $this->formRow($form->get('PRICE')->setValue($bookInfo['PRICE'])); ?></td></tr>
+            <tr><td>CATEGORY:</td><td><?php echo $this->formRow($form->get('CATEGORY')->setvalue($bookInfo['CATEGORYID'])); ?></td></tr>
+            <tr><td>COMMENT:</td><td><?php echo $this->formRow($form->get('COMMENT')->setValue($bookInfo['COMMENT'])); ?></td></tr>
+            <tr><td><?php if ($this->editFlag === true){  ?> <p style="color:red;">Success!Back to Home after 3s... </p><?php $this->editFlag = false ?>
+                    <meta http-equiv="refresh" content="3;URL=/bookstore/book/index">
+            <?php } else{ ?><input type="submit" name="edit" id=" " size="30" value="EDIT"  class="" /><?php } ?></td>
             </tr>
         </table>
     <?php
-    //endif;
-    endif;
-    ?>
-    <br><br><br>
+    }
+    echo $this->form()->closeTag();
+    ?> 
+    <span>
+        <ul>
+            <li><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/index' ?>">GO TO THE BOOK LIST</a></li>
+        </ul>
+    </span>
 </div>

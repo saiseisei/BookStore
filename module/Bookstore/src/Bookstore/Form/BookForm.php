@@ -23,7 +23,7 @@ class BookForm extends Form {
         ));
         
         $this->add(array(
-            'name' => 'isbn',
+            'name' => 'ISBN',
             'type' => 'text',
             'attributes' => array(
                 'size' => 20,
@@ -35,7 +35,7 @@ class BookForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'title',
+            'name' => 'TITLE',
             'type' => 'text',
             'attributes' => array(
                 'size' => 30,
@@ -44,7 +44,7 @@ class BookForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'subtitle',
+            'name' => 'SUBTITLE',
             'type' => 'textarea',
             'attributes' => array(
                 'rows' => 3,
@@ -53,7 +53,7 @@ class BookForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'writer',
+            'name' => 'WRITER',
             'type' => 'textarea',
             'attributes' => array(
                 'rows' => 3,
@@ -62,7 +62,7 @@ class BookForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'price',
+            'name' => 'PRICE',
             'type' => 'text',
             'attributes' => array(
                 'size' => 15,
@@ -71,11 +71,11 @@ class BookForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'category',
+            'name' => 'CATEGORY',
             'type' => 'select',
-            'value' => 2,
+            'value' => 11,
             'attributes' => array(
-                'id' => 'category',
+                'id' => 'CATEGORY',
             ),
             'options' => array(
                 'value_options' => array(
@@ -89,13 +89,13 @@ class BookForm extends Form {
                     '7' => '人文',
                     '8' => '語学',
                     '9' => '医学・薬学',
-                    '10' => 'コンピュータ'
-                ),
+                    '10' => 'コンピューター'
+                    ),
             ),
         ));
 
         $this->add(array(
-            'name' => 'comment',
+            'name' => 'COMMENT',
             'type' => 'textarea',
             'attributes' => array(
                 'rows' => 3,
@@ -109,7 +109,7 @@ class BookForm extends Form {
         $inputFilter = new InputFilter();
 
         $inputFilter->add(array(
-            'name' => 'isbn',
+            'name' => 'ISBN',
             'required' => true,
             'filters' => array(
                 array('name' => 'StripTags'),
@@ -141,7 +141,7 @@ class BookForm extends Form {
         ));
 
         $inputFilter->add(array(
-            'name' => 'title',
+            'name' => 'TITLE',
             'required' => true,
             'filters' => array(
                 array('name' => 'StripTags'),
@@ -173,7 +173,7 @@ class BookForm extends Form {
         ));
 
         $inputFilter->add(array(
-            'name' => 'price',
+            'name' => 'PRICE',
             'required' => true,
             'filters' => array(
                 array('name' => 'StripTags'),
@@ -202,7 +202,7 @@ class BookForm extends Form {
         ));
 
         $inputFilter->add(array(
-            'name' => 'category',
+            'name' => 'CATEGORYID',
             'required' => true,
         ));
         

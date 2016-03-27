@@ -9,25 +9,25 @@
     <h3 align='left'> ADD A BOOK</h3>
     <table>
         <tr>
-            <td>ISBN:</td><td><?php echo $this->formRow($form->get('isbn')) ?></td>
+            <td>ISBN:</td><td><?php echo $this->formRow($form->get('ISBN')) ?></td>
         </tr>
         <tr>
-            <td>TITLE:</td><td><?php echo $this->formRow($form->get('title')) ?></td>
+            <td>TITLE:</td><td><?php echo $this->formRow($form->get('TITLE')) ?></td>
         </tr>
         <tr>
-            <td>SUBTITLE:</td><td><?php echo $this->formRow($form->get('subtitle')) ?></td>
+            <td>SUBTITLE:</td><td><?php echo $this->formRow($form->get('SUBTITLE')) ?></td>
         </tr>
         <tr>
-            <td>WRITER:</td><td><?php echo $this->formRow($form->get('writer')) ?></td>
+            <td>WRITER:</td><td><?php echo $this->formRow($form->get('WRITER')) ?></td>
         </tr>
         <tr>
-            <td>PRICE:</td><td><?php echo $this->formRow($form->get('price')) ?></td>
+            <td>PRICE:</td><td><?php echo $this->formRow($form->get('PRICE')) ?></td>
         </tr>
         <tr>
-            <td>CATEGORY:</td><td><?php echo $this->formRow($form->get('category')); ?></td>
+            <td>CATEGORY:</td><td><?php echo $this->formRow($form->get('CATEGORY')); ?></td>
         </tr>
         <tr>
-            <td>COMMENT:</td><td><?php echo $this->formRow($form->get('comment')) ?></td>
+            <td>COMMENT:</td><td><?php echo $this->formRow($form->get('COMMENT')) ?></td>
         </tr>
         <tr>
             <td><?php if ($this->addFlag === true): ?> <p style="color:red;">Success in adding a book!</p><?php else: ?><input type="submit" name="add" id=" " size="30" value="ADD" /><?php endif; ?></td>

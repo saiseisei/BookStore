@@ -12,7 +12,7 @@ class BookInfoTable {
     public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
-    
+
     //get a book from the database by the book's isbn
     public function existBook($isbn) {
 
@@ -38,7 +38,16 @@ class BookInfoTable {
     }
 
     public function countBooksNum() {
-        $sql = 'SELECT COUNT(NO) AS NUM FROM bookstoredb.bookinfo;';
+        $sql = 'SELECT 
+                    COUNT(*) AS NUM 
+                FROM 
+                    bookinfo  T1
+                LEFT OUTER JOIN 
+                    category  T2
+                ON 
+                    T1.CATEGORYID = T2.CATEGORYID
+                WHERE
+                    T1.DELFLAG = 0 ';
         $rowsNum = $this->tableGateway->getAdapter()->query($sql)->execute();
         $nums = $rowsNum->current();
         $num = $nums['NUM'];
@@ -50,40 +59,54 @@ class BookInfoTable {
         $startRecordNo = ($currentPage - 1) * RECORDS_IN_ONE_PAGE;
         $endRecordNo = $currentPage * RECORDS_IN_ONE_PAGE;
 
-        $sql = 'SELECT * FROM bookstoredb.bookinfo WHERE NO > :startRecordNo AND NO <= :endRecordNo AND DELFLAG = 0;';
-        $param = array(':startRecordNo' => $startRecordNo, ':endRecordNo' => $endRecordNo,);
-        $resultSet = $this->tableGateway->getAdapter()->query($sql);
-        $result = $resultSet->execute($param);
-
+        $sql = 'SELECT 
+                    T1.*, 
+                    T2.CATEGORY 
+                FROM 
+                    bookinfo  T1
+                LEFT OUTER JOIN 
+                    category  T2
+                ON 
+                    T1.CATEGORYID = T2.CATEGORYID
+                WHERE
+                    T1.DELFLAG = 0 
+                LIMIT ' . RECORDS_IN_ONE_PAGE . ' 
+                OFFSET ' . $startRecordNo . ';';
+        $resultSet = $this->tableGateway->getAdapter()->query($sql)->execute($sql);
         $rows = array();
-        if (count($result) > 0) {
-            foreach ($result as $key => $value) {
-               $rows[$key]['NO'] = $value['NO'];
-               $rows[$key]['ISBN'] = $value['ISBN'];
-               $rows[$key]['TITLE'] = $value['TITLE'];
-               $rows[$key]['SUBTITLE'] = $value['SUBTITLE'];
-               $rows[$key]['WRITER'] = $value['WRITER'];
-               $rows[$key]['PRICE'] = $value['PRICE'];
-               $rows[$key]['CATEGORY'] = $value['CATEGORY'];
-               $rows[$key]['COMMENT'] = $value['COMMENT'];
+        if (count($resultSet) > 0) {
+            foreach ($resultSet as $key => $value) {
+                $rows[$key]['NO'] = $value['NO'];
+                $rows[$key]['ISBN'] = $value['ISBN'];
+                $rows[$key]['TITLE'] = $value['TITLE'];
+                $rows[$key]['SUBTITLE'] = $value['SUBTITLE'];
+                $rows[$key]['WRITER'] = $value['WRITER'];
+                $rows[$key]['PRICE'] = $value['PRICE'];
+                $rows[$key]['CATEGORYID'] = $value['CATEGORYID'];
+                $rows[$key]['CATEGORY'] = $value['CATEGORY'];
+                $rows[$key]['COMMENT'] = $value['COMMENT'];
             }
         } else {
             throw new \Exception("Could not find a book!");
         }
+        
         return $rows;
     }
 
     //get a book from the database by the book's isbn
     public function getBook($id) {
 
-        $sql = 'SELECT * FROM bookinfo WHERE NO = :id;';
+
+        $sql = 'SELECT bookinfo.*, category.CATEGORY FROM bookinfo, category '
+                . 'WHERE  category.CATEGORYID = bookinfo.CATEGORYID '
+                . 'AND bookinfo.NO = :id '
+                . 'AND bookinfo.DELFLAG = 0;';
         $param = array(':id' => $id);
         $resultSet = $this->tableGateway->getAdapter()->query($sql);
         $rows = $resultSet->execute($param);
 
         if (count($rows) > 0) {
             $row = $rows->current();
-            \Zend\Debug\Debug::dump($row);die;
         } else {
             throw new \Exception("Could not find $id");
         }
@@ -95,18 +118,18 @@ class BookInfoTable {
 
         $book = array();
 
-        if ($this->existBook($bookInfo->isbn) === TRUE) {
+        if ($this->existBook($bookInfo->ISBN) === TRUE) {
             throw new \Exception('The book has been existed! Try again!');
         } else {
             $book = array(
-                'isbn' => $bookInfo->isbn,
-                'title' => $bookInfo->title,
-                'subtitle' => $bookInfo->subtitle,
-                'writer' => $bookInfo->writer,
-                'price' => $bookInfo->price,
-                'category' => $bookInfo->category,
-                'comment' => $bookInfo->comment,
-                'delflag' => 0
+                'ISBN' => $bookInfo->ISBN,
+                'TITLE' => $bookInfo->TITLE,
+                'SUBTITLE' => $bookInfo->SUBTITLE,
+                'WRITER' => $bookInfo->WRITER,
+                'PRICE' => $bookInfo->PRICE,
+                'CATEGORYID' => $bookInfo->CATEGORYID,
+                'COMMENT' => $bookInfo->COMMENT,
+                'DELFLAG' => 0
             );
         }
         $this->tableGateway->insert($book);
@@ -115,33 +138,24 @@ class BookInfoTable {
     //updata the book's information 
     public function editBook($bookInfo) {
 
-//        $book = array(
-//            'isbn' => $bookInfo['isbn'],
-//            'title' => $bookInfo['title'],
-//            'price' => $bookInfo['price'],
-//        );
-        $row = $this->getBook($bookInfo['isbn']);
-        if (!$row) {
-            throw new \Exception('The book doesn\'t exist! ');
-        }
-        if (($row->title == $bookInfo['title']) && ($row->price == $bookInfo['price'])) {
-            throw new \Exception('The book is exist! Edit again!');
-        }
-        $this->tableGateway->update($bookInfo, array('isbn' => $bookInfo['isbn']));
+        $this->getBook($bookInfo['NO']);
+        $this->tableGateway->update($bookInfo, array('NO' => $bookInfo['NO']));
     }
 
     //delete the book from the database
-    public function deleteBook($bookInfo) {
-//        $book = array(
-//            'isbn' => $bookInfo->isbn,
-//            'title' => $bookInfo->title,
-//            'price' => $bookInfo->price,
-//        );
-        $row = $this->getBook($bookInfo->isbn);
-        if (!$row) {
-            throw new \Exception('The book doesn\'t exist!');
+    public function deleteBook($params) {
+
+        if (isset($params)) {
+            $isbns = implode('","', $params);
+            $sql = 'UPDATE 
+                        bookinfo SET DELFLAG = 1 WHERE ISBN in ("' . implode('","', $params) . '");';
+
+            $param = array(':isbns' => $isbns);
+            $resultSet = $this->tableGateway->getAdapter()->query($sql);
+            $resultSet->execute($param);
+        } else {
+            throw new \Exception("Delete Error!");
         }
-        $this->tableGateway->delete(array('isbn' => $bookInfo->isbn));
     }
 
     /* public function setDbAdapter(Adapter $adapter)
