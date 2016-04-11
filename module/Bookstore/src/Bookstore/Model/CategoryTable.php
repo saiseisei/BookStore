@@ -18,13 +18,19 @@ class CategoryTable {
         $resultSet = $this->tableGateway->getAdapter()->query($sql)->execute();
         return $resultSet;
     }
+    
+    public function getBookCategorys() {
+        $sql = 'SELECT * FROM bookstoredb.category;';
+        $resultSet = $this->tableGateway->getAdapter()->query($sql)->execute();
+        return $resultSet;
+    }
 
     public function getCategory($id) {
         $row = array();
         $category = array();
         
-        $sql = 'SELECT * FROM bookstoredb.category WHERE CATEGORYID = :category AND DELFLAG = 0;';
-        $param = array(':category' => $id);
+        $sql = 'SELECT * FROM bookstoredb.category WHERE CATEGORYID = :id AND DELFLAG = 0;';
+        $param = array(':id' => $id);
         $result = $this->tableGateway->getAdapter()->query($sql);
         $rows = $result->execute($param);
 

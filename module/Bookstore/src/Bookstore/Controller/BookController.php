@@ -22,26 +22,39 @@ class BookController extends AbstractActionController {
 
     //List all the books
     public function indexAction() {
-
         $view = new ViewModel;
         $form = new PageForm();
         $request = $this->getRequest();
         $session = new SessionContainer;
-
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
-        $rowsNum = $bookInfoTable->countBooksNum();
-        $totalPages = ceil($rowsNum / RECORDS_IN_ONE_PAGE);
+
+        $pagination = array('books' => array(), 'currentPage' => 1);
+        $post = array();
+        $keyword = "";
+        $totalPages = "";
 
         if ($request->isPost()) {
             $post = $request->getPost();
-            $form->setInputFilter($form->getInputFilter()); 
+//\Zend\Debug\Debug::dump($post);
+            $form->setInputFilter($form->getInputFilter());
             $form->setData($post);
-            $currentPage = $session->currentPage;
-            $pagination = $this->Pagination($currentPage, $totalPages, $post);
+            if ($form->isValid() == true) {
+                if (array_key_exists('SEARCH', $post)) {
+                    $keyword = $post['keyword'];
+                    $session->keyword = $keyword;
+                }
+                $rowsNum = $bookInfoTable->countBooksNum($session->keyword);
+                $totalPages = ceil($rowsNum / RECORDS_IN_ONE_PAGE);
+                $currentPage = $session->currentPage;
+                $pagination = $this->Pagination($currentPage, $totalPages, $post);
+            }
             $session->post = $post;
             $session->currentPage = $pagination['currentPage'];
         } else {
+            $rowsNum = $bookInfoTable->countBooksNum($session->keyword);
+            $totalPages = ceil($rowsNum / RECORDS_IN_ONE_PAGE);
             $currentPage = $session->currentPage;
+            
             if (empty($currentPage)) {
                 $currentPage = 1;
             } else if ($currentPage > $totalPages) {
@@ -49,7 +62,7 @@ class BookController extends AbstractActionController {
             } else {
                 $currentPage = $currentPage;
             }
-            $post = array();
+            
             $form->setData($post);
             $pagination = $this->Pagination($currentPage, $totalPages, $post);
             $session->currentPage = $currentPage;
@@ -64,9 +77,10 @@ class BookController extends AbstractActionController {
             $showNext = FALSE;
         }
 
-        //\Zend\Debug\Debug::dump($pagination);die;
-        
-        $view->data = $pagination;
+//\Zend\Debug\Debug::dump($pagination);die;
+        $view->keyword = $session->keyword;
+        $view->data = $pagination["books"];
+        $view->currentPage = $pagination["currentPage"];
         $view->totalPages = $totalPages;
         $view->showBefore = $showBefore;
         $view->showNext = $showNext;
@@ -82,7 +96,7 @@ class BookController extends AbstractActionController {
         $view = new ViewModel;
         $request = $this->getRequest();
         $form = new BookForm();
-        $bookInfo = array(); 
+        $bookInfo = array();
         $addFlag = false;
 
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
@@ -94,7 +108,7 @@ class BookController extends AbstractActionController {
                 $option = $bookInfo->CATEGORY;
                 $categoryTable = $this->getServiceLocator()->get('Bookstore\Model\CategoryTable');
                 $category = $categoryTable->getCategory($option);
-                $bookInfo->CATEGORY = $category['CATEGORY']; 
+                $bookInfo->CATEGORY = $category['CATEGORY'];
                 $bookInfoTable->addBook($bookInfo);
                 $addFlag = true;
             } else {
@@ -168,43 +182,51 @@ class BookController extends AbstractActionController {
             unset($session->isbns);
             return $this->redirect()->toUrl('/bookstore/book/index');
         }
-        
+
         $view->title = "Delete Books";
         return $view;
     }
 
     public function Pagination($currentPage, $totalPages, $post) {
 
-        switch (isset($post)) { 
-            case array_key_exists('BEFORE', $post): 
+        // Search by keyword
+        $session = new SessionContainer;
+        $keyword = $session->keyword;
+
+        switch (isset($post)) {
+            case array_key_exists('BEFORE', $post):
                 $currentPage = $currentPage - 1;
                 break;
-            case array_key_exists('NEXT', $post): 
+            case array_key_exists('NEXT', $post):
                 $currentPage = $currentPage + 1;
                 break;
-            case array_key_exists('GO', $post): 
-                if (isset($post['goToPage'])) {
-                    if($post['goToPage'] > 0 && $post['goToPage'] <= $totalPages){
+            case array_key_exists('GO', $post):
+                if (!empty($post['goToPage'])) {
+                    if ($post['goToPage'] > 0 && $post['goToPage'] <= $totalPages) {
                         $currentPage = $post['goToPage'];
                     }
                 } else {
                     $currentPage = 1;
                 }
                 break;
-            default: 
+            case array_key_exists('SEARCH', $post):
+                $keyword = $post['keyword'];
+                $currentPage = 1;
+            default:
                 if (empty($currentPage)) {
                     $currentPage = 1;
                 } else {
                     $currentPage = $currentPage;
                 }
                 break;
-        }
+        }  
+//echo 'currentPage:'.$currentPage.'<br>totalPages:'.$totalPages.'<br>keyword:'.$keyword;
         $bookInfoTable = $this->getServiceLocator()->get('Bookstore\Model\BookInfoTable');
-        $books = $bookInfoTable->getBooksByPage($currentPage);
+        $books = $bookInfoTable->getBooks($currentPage, $keyword);
         return $pagination = array(
             'currentPage' => $currentPage,
             'books' => $books,
         );
     }
-
+    
 }

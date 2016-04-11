@@ -11,23 +11,7 @@ class PageForm extends Form {
     public function __construct() {
         
         parent::__construct('page');
-        //$this->setAttribute('method', 'post');
         
-//        $this->add(array(
-//            'name' => 'BEFORE',
-//            'type' => 'button',
-//        ));
-//        
-//        $this->add(array(
-//            'name' => 'NEXT',
-//            'type' => 'button',
-//        ));
-//        
-//        $this->add(array(
-//            'name' => 'GO',
-//            'type' => 'button',
-//        ));
-
         $this->add(array(
             'name' => 'goToPage',
             'type' => 'text',
@@ -54,13 +38,13 @@ class PageForm extends Form {
                     'break_chain_on_failure' => true,
                     'options' => array(
                         'messages' => array(
-                            \Zend\Validator\Digits::NOT_DIGITS => sprintf('%sを数字で入力してください。', '書類価格'),
+                            \Zend\Validator\Digits::NOT_DIGITS => sprintf('%sを数字で入力してください。', 'ページ'),
                         ),
                     ),
                 )
             )
         ));
-
+        
         return $inputFilter;
     }
 

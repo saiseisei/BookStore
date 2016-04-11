@@ -37,8 +37,19 @@
 </script>
 <div>
     <ul>
-        <li><input type="button" name="ADD" value="ADD BOOK" onclick="location.href = 'add'"></li>
-        <li><input type="button" name="DELETE" value="DELETE BOOKS" onclick="getDeleteObj()"></li>
+        <li style="float: left; margin: 10px; padding: 6px;"><input type="button" name="ADD" value="ADD BOOK" onclick="location.href = 'add'"></li>
+        <li style="float: left; margin: 10px; padding: 6px;">
+            <form name="bookSearchForm" action="/bookstore/book/index" method="POST">
+                KEYWORD:<input type="text" name="keyword" id="keyword" value="<?php 
+                if (isset($_POST['keyword'])) {
+                    echo $_POST['keyword'];
+                } else {
+                    echo $this->keyword;
+                } ?>">
+                <input type="submit" name="SEARCH" value="SEARCH">
+            </form>
+        </li>
+        <li style="float: right; margin: 10px; padding: 6px;"><input type="button" name="DELETE" value="DELETE BOOKS" onclick="getDeleteObj()"></li>
     </ul>
     <div>
         <form name="book">
@@ -54,10 +65,9 @@
                     <td style="width: 40px;">COMMENT</td>
                     <td style="width: 40px;">EDIT</td>
                     <td align="center">select all<br><input type="checkbox" name="allcheck" id="allcheck" onClick="allChecked()"></td>
-                    <!--<td style="width: 40px;">DELECT</td>-->
                 </tr>
                 <?php
-                $books = $this->data['books'];
+                $books = $this->data;
                 if (count($books) > 0):
                     foreach ($books as $row):
                         ?>
@@ -72,7 +82,6 @@
                             <td><?= $this->escapeHtml($row['COMMENT']); ?></td>
                             <td><a href="<?= $this->url('bookstore', array('controller' => 'book')) . '/edit?id=' . $row['NO'] ?>">EDIT</a></td>
                             <td align="center"><input type="checkbox" name="subcheck" id="subcheck"></td>
-                            <!--<td><a href="<?php //$this->url('bookstore', array('controller' => 'book')) . '/delete?id=' . $row['NO']  ?>">DELETE</a></td>-->
                         </tr>
                         <?php
                     endforeach;
@@ -85,29 +94,30 @@
     <div align='right'>
         <table>
             <tr>
-
                 <?php
                 $form->setAttribute('id', 'page');
                 $form->prepare();
                 echo $this->form()->openTag($form);
                 ?>
                 <td>
-                    TOTAL /CURRENT : <?php echo $this->totalPages . '/' . $this->data['currentPage']; ?>
+                    CURRENT／TOTAL: <?php echo $this->currentPage . '／' . $this->totalPages; ?>
                 </td>
+                <?php if ($this->totalPages > 1): ?>
                 <td>
                     <?php echo $this->formRow($form->get('goToPage')); ?>
                 </td>
                 <td>
                     <input type="submit" name="GO" value="GO">
                 </td>
+                <?php endif; ?>
                 <td>
                     <?php if ($this->showBefore === TRUE) { ?>
-                        <input type="submit" name="BEFORE" value="BEFORE">
+                    <input type="submit" name="BEFORE" value="BEFORE">
                     <?php } ?>
                 </td>
                 <td>
                     <?php if ($this->showNext === TRUE) { ?>
-                        <input type="submit" name="NEXT" value="NEXT">
+                    <input type="submit" name="NEXT" value="NEXT">
                     <?php } ?>
                 </td>
                 <?php echo $this->form()->closeTag(); ?>

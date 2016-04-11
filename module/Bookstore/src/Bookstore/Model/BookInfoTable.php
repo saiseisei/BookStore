@@ -37,7 +37,7 @@ class BookInfoTable {
         return $resultSet;
     }
 
-    public function countBooksNum() {
+    public function countBooksNum($keyword) {
         $sql = 'SELECT 
                     COUNT(*) AS NUM 
                 FROM 
@@ -48,16 +48,32 @@ class BookInfoTable {
                     T1.CATEGORYID = T2.CATEGORYID
                 WHERE
                     T1.DELFLAG = 0 ';
-        $rowsNum = $this->tableGateway->getAdapter()->query($sql)->execute();
-        $nums = $rowsNum->current();
-        $num = $nums['NUM'];
+        if(!empty($keyword)){
+            $sql .= 'AND (
+                    T1.NO LIKE :keyword OR
+                    T1.ISBN LIKE :keyword OR
+                    T1.TITLE LIKE :keyword OR
+                    T1.SUBTITLE LIKE :keyword OR
+                    T1.WRITER LIKE :keyword OR
+                    T1.PRICE LIKE :keyword )';
+        }
+        $param = array(':keyword' => "%$keyword%");
+        $query = $this->tableGateway->getAdapter()->query($sql);
+        $rowsNum = $query->execute($param);
+        if(count($rowsNum)>0){
+            $nums = $rowsNum->current();
+            $num = $nums['NUM'];
+        } else {
+            throw new \Exception("Could not find a book!");
+        }
 //\Zend\Debug\Debug::dump($num);die;
         return $num;
     }
-
-    public function getBooksByPage($currentPage) {
+    
+    public function getBooks($currentPage, $keyword = null) {
         $startRecordNo = ($currentPage - 1) * RECORDS_IN_ONE_PAGE;
         $endRecordNo = $currentPage * RECORDS_IN_ONE_PAGE;
+        $rows = array();
 
         $sql = 'SELECT 
                     T1.*, 
@@ -69,13 +85,25 @@ class BookInfoTable {
                 ON 
                     T1.CATEGORYID = T2.CATEGORYID
                 WHERE
-                    T1.DELFLAG = 0 
-                LIMIT ' . RECORDS_IN_ONE_PAGE . ' 
+                    T1.DELFLAG = 0 ';
+        if(!empty($keyword)){
+            $sql .= 'AND (
+                    T1.NO LIKE :keyword OR
+                    T1.ISBN LIKE :keyword OR
+                    T1.TITLE LIKE :keyword OR
+                    T1.SUBTITLE LIKE :keyword OR
+                    T1.WRITER LIKE :keyword OR
+                    T1.PRICE LIKE :keyword )';
+        }
+        $sql .= 'LIMIT ' . RECORDS_IN_ONE_PAGE . ' 
                 OFFSET ' . $startRecordNo . ';';
-        $resultSet = $this->tableGateway->getAdapter()->query($sql)->execute($sql);
-        $rows = array();
-        if (count($resultSet) > 0) {
-            foreach ($resultSet as $key => $value) {
+        
+        $param = array(':keyword' => "%$keyword%");
+        $query = $this->tableGateway->getAdapter()->query($sql);
+        $result = $query->execute($param);
+        
+        if (count($result) > 0) {
+            foreach ($result as $key => $value) {
                 $rows[$key]['NO'] = $value['NO'];
                 $rows[$key]['ISBN'] = $value['ISBN'];
                 $rows[$key]['TITLE'] = $value['TITLE'];

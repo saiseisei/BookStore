@@ -78,8 +78,8 @@ class BookForm extends Form {
                 'id' => 'CATEGORY',
             ),
             'options' => array(
+                'empty_option' => 'Choose the category',
                 'value_options' => array(
-                    '0' => 'Choose the category',
                     '1' => '小説',
                     '2' => '文芸',
                     '3' => '教養',
